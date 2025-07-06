@@ -42,17 +42,21 @@ Actualmente en desarrollo. El frontend está implementado con datos estáticos. 
 
    ```bash
 
-   - git clone https://github.com/tu-usuario/SIMEL.git
+git clone https://github.com/tu-usuario/SIMEL.git
 
 
 2. **Navega al directorio del proyecto:**
 
-- cd SIMEL
+```bash
+
+cd SIMEL
 
 
 3. **Instala las dependencias y construye el proyecto:**
 
-   - ./mvnw clean install
+```bash
+
+./mvnw clean install
 
 
 4. **Importa el proyecto en tu IDE (NetBeans recomendado)**
@@ -63,4 +67,6 @@ Actualmente en desarrollo. El frontend está implementado con datos estáticos. 
 
 - Restaura el respaldo respaldo.sql si es necesario:
 
-   - mysql -u usuario -p simel < respaldo.sql
+```bash
+
+mysql -u usuario -p simel < respaldo.sql
