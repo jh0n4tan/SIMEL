@@ -1,89 +1,134 @@
 document.addEventListener("DOMContentLoaded", function () {
+    inicializarFormularioDocente();
+    inicializarFormularioAlumno();
+});
+
+function inicializarFormularioDocente() {
     const formDocente = document.getElementById("form-asignar-docente");
-    const formAlumno = document.getElementById("form-asignar-alumno");
-    const historialList = document.getElementById("alumnos-por-seccion");
 
-    // 👉 Verificamos que exista el formulario del docente antes de agregarle eventos
-    if (formDocente) {
-        formDocente.addEventListener("submit", function (e) {
-            e.preventDefault();
+    if (!formDocente) return;
 
-            const formData = new FormData(formDocente);
-            formData.append("accion", "asignarCursoDocente");
+    formDocente.addEventListener("submit", function (e) {
+        e.preventDefault();
 
-            fetch("administrador", {
-                method: "POST",
-                body: formData
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.status === "success") {
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Asignado',
-                        text: 'Curso asignado correctamente.'
-                    }).then(() => location.reload());
-                } else {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Error',
-                        text: data.message
-                    });
-                }
-            })
-            .catch(error => {
+        const idDocente = formDocente.querySelector('[name="id_docente"]')?.value;
+        const idCurso = formDocente.querySelector('[name="id_curso"]')?.value;
+        const idGradoSeccion = formDocente.querySelector('[name="id_grado_seccion"]')?.value;
+
+        const datos = new URLSearchParams();
+        datos.append("id_docente", idDocente);
+        datos.append("id_curso", idCurso);
+        datos.append("id_grado_seccion", idGradoSeccion);
+
+        fetch("AsignarCursoDocente", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded"
+            },
+            body: datos.toString()
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.mensajeExito) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Asignado',
+                    text: data.mensajeExito
+                }).then(() => location.reload());
+            } else if (data.mensajeError) {
                 Swal.fire({
                     icon: 'error',
-                    title: 'Error de red',
-                    text: 'Hubo un problema al intentar enviar los datos.'
+                    title: 'Error',
+                    text: data.mensajeError
                 });
-                console.error("Error:", error);
-            });
-        });
-    }
-
-    // 👉 Verificamos que exista el formulario del alumno antes de agregarle eventos
-    if (formAlumno && historialList) {
-        formAlumno.addEventListener("submit", function (e) {
-            e.preventDefault();
-            const formData = new FormData(formAlumno);
-            const idAlumno = formData.get("id_alumno");
-            const cursosManual = formData.getAll("cursos_manual");
-
-            if (!idAlumno) {
+            } else {
                 Swal.fire({
-                    icon: 'warning',
-                    title: 'Ups...',
-                    text: 'Por favor selecciona un alumno.'
+                    icon: 'error',
+                    title: 'Error inesperado',
+                    text: 'Respuesta del servidor no reconocida.'
                 });
-                return;
             }
-
-            if (cursosManual.length === 0) {
-                Swal.fire({
-                    icon: 'info',
-                    title: 'Sin selección',
-                    text: 'Selecciona al menos un curso para actualizar.'
-                });
-                return;
-            }
-
-            cursosManual.forEach(cursoId => {
-                const label = formAlumno.querySelector(`input[value="${cursoId}"]`).nextElementSibling.textContent.trim();
-                const yaExiste = Array.from(historialList.children).some(li => li.textContent.includes(label));
-                if (!yaExiste) {
-                    const li = document.createElement("li");
-                    li.className = "list-group-item";
-                    li.textContent = `2024 - ${label} - Asignado manualmente`;
-                    historialList.appendChild(li);
-                }
-            });
-
+        })
+        .catch(error => {
             Swal.fire({
-                icon: 'success',
-                title: 'Actualizado',
-                text: 'Cursos del alumno actualizados correctamente.'
+                icon: 'error',
+                title: 'Error de red',
+                text: 'Hubo un problema al intentar enviar los datos.'
             });
+            console.error("Error:", error);
         });
-    }
-});
+    });
+}
+
+function inicializarFormularioAlumno() {
+    const formAlumno = document.getElementById("form-asignar-alumno");
+
+    if (!formAlumno) return;
+
+    formAlumno.addEventListener("submit", function (e) {
+        e.preventDefault();
+
+        const idAlumno = formAlumno.querySelector('[name="id_alumno"]')?.value;
+        const idGradoSeccion = formAlumno.querySelector('[name="id_grado_seccion"]')?.value;
+
+        if (!idAlumno) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Ups...',
+                text: 'Por favor selecciona un alumno.'
+            });
+            return;
+        }
+
+        if (!idGradoSeccion) {
+            Swal.fire({
+                icon: 'info',
+                title: 'Sin selección',
+                text: 'Selecciona un grado/sección para asignar.'
+            });
+            return;
+        }
+
+        const datos = new URLSearchParams();
+        datos.append("id_alumno", idAlumno);
+        datos.append("id_grado_seccion", idGradoSeccion);
+
+        fetch("AsignarAlumno", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded"
+            },
+            body: datos.toString()
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.mensajeExito) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Asignado',
+                    text: data.mensajeExito
+                }).then(() => location.reload());
+            } else if (data.mensajeError) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: data.mensajeError
+                });
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error inesperado',
+                    text: 'Respuesta del servidor no reconocida.'
+                });
+            }
+        })
+        .catch(error => {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error de red',
+                text: 'Hubo un problema al intentar enviar los datos.'
+            });
+            console.error("Error:", error);
+        });
+    });
+}

@@ -17,6 +17,9 @@ public class GuardarCanjeServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
+        // ✅ Configurar correctamente la codificación de caracteres
+        request.setCharacterEncoding("UTF-8");
+
         HttpSession session = request.getSession(false);
         if (session == null || session.getAttribute("id_login") == null) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);

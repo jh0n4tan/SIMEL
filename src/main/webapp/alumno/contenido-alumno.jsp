@@ -217,7 +217,7 @@
                                             <p class="puntos-requeridos text-primary"><strong>${premio.puntosRequeridos} puntos</strong></p>
                                             <button 
                                                 class="btn btn-primary w-100" 
-                                                onclick="canjearPremio('${premio.id}', '${premio.nombre}', ${premio.puntosRequeridos}, '${premio.tipo}')">Canjear</button>
+                                                onclick="canjearPremio(${premio.id}, '${premio.nombre}', ${premio.puntosRequeridos}, '${premio.tipo}')">Canjear</button>
                                         </div>
                                     </div>
                                 </div>

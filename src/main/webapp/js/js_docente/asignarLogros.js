@@ -5,9 +5,9 @@ document.getElementById('selectCursoLogros').addEventListener('change', async fu
     const selectedOption = selectCurso.options[selectCurso.selectedIndex];
     const grado = selectedOption.getAttribute('data-grado');
     const seccion = selectedOption.getAttribute('data-seccion');
-    const idGradoSeccion = selectedOption.getAttribute('data-idgradoseccion'); // ✅ Aquí capturas el ID real
+    const idGradoSeccion = selectedOption.getAttribute('data-idgradoseccion');
 
-    // Guardar en el input hidden el ID real de grado_seccion
+    // Guardar el id real de grado_seccion en el input hidden
     document.getElementById('idGradoSeccion').value = idGradoSeccion;
 
     const selectAlumno = document.getElementById('selectAlumno');
@@ -15,6 +15,7 @@ document.getElementById('selectCursoLogros').addEventListener('change', async fu
 
     try {
         const response = await fetch(`/SIMEL_2_0/obtenerAlumnos?idCurso=${idCurso}&grado=${grado}&seccion=${seccion}`);
+        if (!response.ok) throw new Error('Error en la respuesta del servidor');
         const alumnos = await response.json();
 
         if (alumnos.length > 0) {
@@ -33,6 +34,7 @@ document.getElementById('selectCursoLogros').addEventListener('change', async fu
     } catch (error) {
         console.error('Error al obtener alumnos:', error);
         Swal.fire('Error', 'No se pudieron cargar los alumnos del curso.', 'error');
+        selectAlumno.disabled = true;
     }
 });
 
@@ -46,6 +48,7 @@ function asignarLogro(event) {
     const inputComentario = document.getElementById('comentario');
     const idGradoSeccion = document.getElementById('idGradoSeccion').value;
 
+    // Validaciones básicas
     if (!selectCurso.value) {
         return Swal.fire({ icon: 'warning', title: 'Falta seleccionar curso', text: 'Por favor selecciona un curso.' });
     }
@@ -63,6 +66,7 @@ function asignarLogro(event) {
 
     const comentario = inputComentario.value.trim();
 
+    // Confirmación antes de asignar
     Swal.fire({
         title: '¿Deseas asignar este logro?',
         html: `<b>Curso:</b> ${selectCurso.options[selectCurso.selectedIndex].text}<br>
@@ -91,33 +95,36 @@ function asignarLogro(event) {
                 },
                 body: datos.toString()
             })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    Swal.fire({
-                        icon: 'success',
-                        title: data.msg || 'Logro asignado correctamente',
-                        timer: 1500,
-                        showConfirmButton: false
-                    });
-                    document.getElementById('formLogro').reset();
-                    selectAlumno.disabled = true;
-                } else {
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: data.msg || 'Logro asignado correctamente',
+                            timer: 1500,
+                            showConfirmButton: false
+                        }).then(() => {
+                            location.reload();
+                        });
+                        document.getElementById('formLogro').reset();
+                        selectAlumno.disabled = true;
+                    } else {
+                        // Mostrar error del servidor, ej: logro ya asignado
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: data.msg || 'No se pudo asignar el logro. Intenta de nuevo.'
+                        });
+                    }
+                })
+                .catch(error => {
+                    console.error('Error en fetch:', error);
                     Swal.fire({
                         icon: 'error',
-                        title: 'Error',
-                        text: data.msg || 'No se pudo asignar el logro. Intenta de nuevo.'
+                        title: 'Error de red',
+                        text: 'No se pudo conectar con el servidor.'
                     });
-                }
-            })
-            .catch(error => {
-                console.error('Error en fetch:', error);
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error de red',
-                    text: 'No se pudo conectar con el servidor.'
                 });
-            });
         }
     });
 

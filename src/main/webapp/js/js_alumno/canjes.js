@@ -1,7 +1,6 @@
 // Obtener los puntos del usuario desde el atributo data-puntos
 const datosUsuario = document.getElementById("datosUsuario");
-const puntosUsuario = parseInt(datosUsuario?.dataset?.puntos || "0");
-let canjes = []; // Para almacenar los canjes realizados
+let puntosUsuario = parseInt(datosUsuario?.dataset?.puntos || "0");
 
 function generarCodigo() {
     const caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
@@ -12,7 +11,7 @@ function generarCodigo() {
     return codigo;
 }
 
-function canjearPremio(nombrePremio, puntosNecesarios, tipoPremio) {
+function canjearPremio(idPremio, nombrePremio, puntosNecesarios, tipoPremio) {
     if (puntosUsuario >= puntosNecesarios) {
         Swal.fire({
             title: `¿Deseas canjear "${nombrePremio}"?`,
@@ -23,28 +22,49 @@ function canjearPremio(nombrePremio, puntosNecesarios, tipoPremio) {
             cancelButtonText: 'Cancelar'
         }).then((result) => {
             if (result.isConfirmed) {
-                const codigo = generarCodigo(); // Generar el código único
+                const codigo = generarCodigo();
                 const estadoCanje = tipoPremio === 'digital' ? 'Canje digital exitoso' : 'Canje físico solicitado';
 
-                // Agregar el canje a la lista de canjes
-                canjes.push({
-                    nombre: nombrePremio,
-                    codigo: codigo,
-                    estado: estadoCanje,
-                    tipo: tipoPremio,
+                fetch('guardarCanje', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        idPremio: idPremio,
+                        codigo: codigo,
+                        estado: estadoCanje,
+                        puntosPremio: puntosNecesarios
+                    })
+                })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                        Swal.fire({
+                            title: estadoCanje,
+                            html: `Has canjeado <strong>${nombrePremio}</strong>.<br><strong>Código de canje: ${codigo}</strong>.<br><br>
+                            Guarda este código para canjearlo más tarde.`,
+                            icon: 'success',
+                            confirmButtonText: 'OK'
+                        }).then(() => {
+                            location.reload(); // Recarga la página
+                        });
+                    } else {
+                        Swal.fire({
+                            title: 'Error',
+                            text: data.message || 'No se pudo registrar el canje.',
+                            icon: 'error'
+                        });
+                    }
+                })
+                .catch(err => {
+                    console.error("Error al registrar canje:", err);
+                    Swal.fire({
+                        title: 'Error',
+                        text: 'Error al comunicar con el servidor.',
+                        icon: 'error'
+                    });
                 });
-
-                // Mostrar el código en la alerta
-                Swal.fire({
-                    title: estadoCanje,
-                    html: `Has canjeado <strong>${nombrePremio}</strong>.<br><strong>Código de canje: ${codigo}</strong>.<br><br>
-            Guarda este código para canjearlo más tarde.`,
-                    icon: 'success',
-                    showConfirmButton: true
-                });
-
-                // Actualizar la lista de canjes realizados en la interfaz
-                actualizarCanjesRealizados();
             }
         });
     } else {
@@ -55,24 +75,6 @@ function canjearPremio(nombrePremio, puntosNecesarios, tipoPremio) {
             confirmButtonText: 'OK'
         });
     }
-}
-
-// Función para actualizar la lista de canjes realizados
-function actualizarCanjesRealizados() {
-    const listaCanjes = document.getElementById('canjesRealizados');
-    listaCanjes.innerHTML = ''; // Limpiar la lista antes de actualizarla
-
-    canjes.forEach((canje) => {
-        const item = document.createElement('div');
-        item.classList.add('list-group-item', 'list-group-item-action');
-        item.innerHTML = `
-      <strong>${canje.nombre}</strong><br>
-      Código de canje: <code>${canje.codigo}</code><br>
-      Estado: ${canje.estado}<br>
-      Tipo: ${canje.tipo === 'digital' ? 'Premio digital' : 'Premio físico'}
-    `;
-        listaCanjes.appendChild(item);
-    });
 }
 
 document.getElementById('filtroPuntos').addEventListener('change', function () {
@@ -92,12 +94,10 @@ document.getElementById('filtroPuntos').addEventListener('change', function () {
         }
     });
 
-    // Mostrar mensaje si no hay premios disponibles para canjear
     let catalogoPremios = document.getElementById('catalogoPremios');
     let mensajeNoPremios = document.getElementById('mensajeNoPremios');
 
     if (!mensajeNoPremios) {
-        // Crear el elemento mensaje solo una vez
         mensajeNoPremios = document.createElement('div');
         mensajeNoPremios.id = 'mensajeNoPremios';
         mensajeNoPremios.className = 'alert alert-info mt-3 text-center';
@@ -111,4 +111,3 @@ document.getElementById('filtroPuntos').addEventListener('change', function () {
         mensajeNoPremios.style.display = 'none';
     }
 });
-

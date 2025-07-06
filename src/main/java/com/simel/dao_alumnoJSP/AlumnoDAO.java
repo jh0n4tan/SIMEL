@@ -172,6 +172,7 @@ public class AlumnoDAO {
             insertStmt.setInt(1, idAlumno);
             insertStmt.setInt(2, idPremio);
             insertStmt.setString(3, codigo);
+            estado = estado.trim();
             insertStmt.setString(4, estado);
             insertStmt.executeUpdate();
 

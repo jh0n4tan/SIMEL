@@ -31,6 +31,22 @@ public class LogroAsignadoDAO {
         return false;
     }
 
+    public boolean logroYaAsignado(int idAlumno, int idLogro) {
+        String sql = "SELECT COUNT(*) FROM logro_asignado WHERE id_alumno = ? AND id_logro = ?";
+        try (Connection conn = DataSourceProvider.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, idAlumno);
+            stmt.setInt(2, idLogro);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1) > 0; // true si ya existe el logro para ese alumno
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
     public boolean actualizarPuntosAlumno(int idAlumno, int puntosSumados) {
         String sql = "UPDATE alumno SET puntos_totales = puntos_totales + ? WHERE id = ?";
         try (Connection conn = DataSourceProvider.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {

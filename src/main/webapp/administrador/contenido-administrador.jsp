@@ -218,7 +218,7 @@
                                         <h5 class="mb-0"><i class="fas fa-user-graduate"></i> Asignar Grado a Alumno</h5>
                                     </div>
                                     <div class="card-body">
-                                        <form id="form-asignar-alumno" method="post">
+                                        <form id="form-asignar-alumno" method="post" action="AsignarAlumno">
                                             <div class="form-group">
                                                 <label for="alumno-select">Seleccionar alumno:</label>
                                                 <select class="form-control" id="alumno-select" name="id_alumno" required>
