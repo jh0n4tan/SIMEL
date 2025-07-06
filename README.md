@@ -41,32 +41,28 @@ Actualmente en desarrollo. El frontend está implementado con datos estáticos. 
 1. **Clona el repositorio:**
 
    ```bash
-
-git clone https://github.com/tu-usuario/SIMEL.git
-
+   git clone https://github.com/tu-usuario/SIMEL.git
+   ```
 
 2. **Navega al directorio del proyecto:**
 
-```bash
-
-cd SIMEL
-
+   ```bash
+   cd SIMEL
+   ```
 
 3. **Instala las dependencias y construye el proyecto:**
 
-```bash
-
-./mvnw clean install
-
+   ```bash
+   ./mvnw clean install
+   ```
 
 4. **Importa el proyecto en tu IDE (NetBeans recomendado)**
 
 5. **Configura tu base de datos MySQL:**
 
-- Crea la base de datos simel en MySQL.
+   - Crea la base de datos `simel` en MySQL.
+   - Restaura el respaldo `respaldo.sql` si es necesario:
 
-- Restaura el respaldo respaldo.sql si es necesario:
-
-```bash
-
-mysql -u usuario -p simel < respaldo.sql
+   ```bash
+   mysql -u usuario -p simel < respaldo.sql
+   ```
