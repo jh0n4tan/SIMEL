@@ -14,19 +14,14 @@ Sistema de Incentivo y Motivación para Estudiantes de Lima.
 
 ## Descripción
 
-Sistema web con cuatro módulos principales:
-- Login de usuarios
-- Panel de administrador
-- Panel de docente
-- Panel de alumno
+El sistema **SIMEL** es una plataforma web diseñada para la gestión de estudiantes, docentes y administradores. El sistema aplica el patrón de arquitectura **Modelo-Vista-Controlador (MVC)** y está dividido en varios módulos de usuario:
 
-El proyecto aplica el patrón Modelo-Vista-Controlador (MVC) e incluye:
-- JSP, CSS y JavaScript para el frontend
-- Clases modelo para representar entidades
-- DAOs por rol para el acceso a base de datos
-- Servlets como controladores por rol
+- **Login de usuarios**: Autenticación para acceder al sistema.
+- **Panel de administrador**: Gestión de usuarios y configuración general.
+- **Panel de docente**: Gestión de estudiantes y notas.
+- **Panel de alumno**: Visualización de sus resultados académicos.
 
-Actualmente en desarrollo. El frontend está implementado; faltan integrar consultas dinámicas por rol. Se utilizan datos estáticos de forma temporal.
+Actualmente en desarrollo. El frontend está implementado con datos estáticos. Se trabaja en la integración de consultas dinámicas.
 
 ## Estructura principal
 
@@ -43,7 +38,29 @@ Actualmente en desarrollo. El frontend está implementado; faltan integrar consu
 
 ## Ejecución del proyecto
 
-```bash
-git clone https://github.com/tu-usuario/SIMEL.git
-cd SIMEL
-./mvnw clean install
+1. **Clona el repositorio:**
+
+   ```bash
+
+   - git clone https://github.com/tu-usuario/SIMEL.git
+
+
+2. **Navega al directorio del proyecto:**
+
+- cd SIMEL
+
+
+3. **Instala las dependencias y construye el proyecto:**
+
+   - ./mvnw clean install
+
+
+4. **Importa el proyecto en tu IDE (NetBeans recomendado)**
+
+5. **Configura tu base de datos MySQL:**
+
+- Crea la base de datos simel en MySQL.
+
+- Restaura el respaldo respaldo.sql si es necesario:
+
+   - mysql -u usuario -p simel < respaldo.sql
