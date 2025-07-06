@@ -1,7 +1,7 @@
-# Archivos de texto, que usen line endings automáticos
+# Archivos de texto, que usen line endings automï¿½ticos
 * text=auto
 
-# Fuerza LF en los archivos específicos (útil para scripts, código fuente)
+# Fuerza LF en los archivos especï¿½ficos (ï¿½til para scripts, cï¿½digo fuente)
 *.js text eol=lf
 *.java text eol=lf
 *.jsp text eol=lf

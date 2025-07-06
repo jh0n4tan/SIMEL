@@ -1,6 +1,7 @@
 package com.simel.modelo_administradorJSP;
 
 public class Docente {
+
     private int id;
     private String nombre;
 

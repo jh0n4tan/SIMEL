@@ -1,144 +1,135 @@
 document.addEventListener('DOMContentLoaded', () => {
+    const btnGuardar = document.getElementById('btnGuardarPremio');
+    const btnCancelar = document.getElementById('btnCancelarEdicion');
+    const inputId = document.getElementById('premioId');
+    const inputNombre = document.getElementById('nombrePremio');
+    const inputDescripcion = document.getElementById('descripcionPremio');
+    const inputPuntos = document.getElementById('puntosPremio');
+    const selectTipo = document.getElementById('tipoPremio');
+    const inputArchivo = document.getElementById('archivoImagenPremio');
+    const previewImagen = document.getElementById('previewImagenPremio');
+    const tablaBody = document.getElementById('tablaPremiosBody');
 
-    let premios = [];
-    let modoEdicion = false;
+    let imagenAntigua = null; // Para mantener imagen si no se cambia en edición
 
-    const premioId = document.getElementById("premioId");
-    const nombrePremio = document.getElementById("nombrePremio");
-    const descripcionPremio = document.getElementById("descripcionPremio");
-    const puntosPremio = document.getElementById("puntosPremio");
-    const tipoPremio = document.getElementById("tipoPremio");
-    const archivoImagenPremio = document.getElementById("archivoImagenPremio");
-    const previewImagenPremio = document.getElementById("previewImagenPremio");
-    const btnGuardar = document.getElementById("btnGuardarPremio");
-    const btnCancelar = document.getElementById("btnCancelarEdicion");
-    const tablaPremiosBody = document.getElementById("tablaPremiosBody");
+    function resetForm() {
+        inputId.value = '';
+        inputNombre.value = '';
+        inputDescripcion.value = '';
+        inputPuntos.value = '';
+        selectTipo.value = '';
+        inputArchivo.value = '';
+        previewImagen.innerHTML = '';
+        imagenAntigua = null;
+        btnCancelar.style.display = 'none';
+        btnGuardar.innerHTML = `<i class="fas fa-gift"></i> Guardar`;
+    }
 
-// Vista previa de imagen
-    archivoImagenPremio.addEventListener("change", function () {
-        const file = archivoImagenPremio.files[0];
+    // Mostrar preview cuando se selecciona archivo
+    inputArchivo.addEventListener('change', () => {
+        const file = inputArchivo.files[0];
         if (file) {
             const reader = new FileReader();
             reader.onload = e => {
-                previewImagenPremio.innerHTML = `<img src="${e.target.result}" class="img-thumbnail" width="120">`;
+                previewImagen.innerHTML = `<img src="${e.target.result}" alt="Preview" style="max-width: 150px; max-height: 150px; object-fit: contain;"/>`;
             };
             reader.readAsDataURL(file);
+        } else {
+            previewImagen.innerHTML = '';
         }
     });
 
-// Guardar premio
-    btnGuardar.addEventListener("click", () => {
-        const nombre = nombrePremio.value.trim();
-        const descripcion = descripcionPremio.value.trim();
-        const puntos = parseInt(puntosPremio.value, 10);
-        const tipo = tipoPremio.value;
-        const imagen = previewImagenPremio.querySelector("img")?.src || "";
+    btnGuardar.addEventListener('click', () => {
+        const id = inputId.value;
+        const nombre = inputNombre.value.trim();
+        const descripcion = inputDescripcion.value.trim();
+        const puntos = inputPuntos.value;
+        const tipo = selectTipo.value;
 
-        if (!nombre || !descripcion || isNaN(puntos) || !tipo || !imagen) {
-            alert("Completa todos los campos.");
+        if (!nombre || !descripcion || !puntos || !tipo) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Campos incompletos',
+                text: 'Por favor, completa todos los campos'
+            });
             return;
         }
 
-        if (modoEdicion) {
-            const id = parseInt(premioId.value, 10);
-            const premio = premios.find(p => p.id === id);
-            if (premio) {
-                premio.nombre = nombre;
-                premio.descripcion = descripcion;
-                premio.puntos = puntos;
-                premio.tipo = tipo;
-                premio.imagen = imagen;
+        const formData = new FormData();
+        formData.append('accion', id ? 'editar' : 'agregar');
+        if (id)
+            formData.append('premioId', id);
+        formData.append('nombrePremio', nombre);
+        formData.append('descripcionPremio', descripcion);
+        formData.append('puntosPremio', puntos);
+        formData.append('tipoPremio', tipo);
+        // Si se seleccionó archivo nuevo, se manda, sino se manda imagen antigua
+        if (inputArchivo.files.length > 0) {
+            formData.append('archivoImagenPremio', inputArchivo.files[0]);
+        } else if (imagenAntigua) {
+            formData.append('imagenAntigua', imagenAntigua);
+        }
+
+        fetch('premio', {
+            method: 'POST',
+            body: formData
+        })
+                .then(res => res.text())
+                .then(resp => {
+                    if (resp === 'OK') {
+                        Swal.fire({
+                            icon: 'success',
+                            title: id ? 'Premio actualizado' : 'Premio agregado',
+                            showConfirmButton: false,
+                            timer: 1500
+                        }).then(() => location.reload());
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: 'No se pudo guardar el premio'
+                        });
+                    }
+                });
+    });
+
+    btnCancelar.addEventListener('click', () => resetForm());
+
+    tablaBody.addEventListener('click', e => {
+        if (e.target.closest('.btnEditar')) {
+            const btn = e.target.closest('.btnEditar');
+            const tr = btn.closest('tr');
+
+            inputId.value = tr.dataset.id;
+            inputNombre.value = tr.querySelector('.nombre-premio').textContent.trim();
+            inputDescripcion.value = tr.querySelector('.descripcion-premio').textContent.trim();
+            inputPuntos.value = tr.querySelector('.puntos-premio').textContent.trim();
+            selectTipo.value = tr.querySelector('.tipo-premio').textContent.trim();
+
+            // Obtener src de imagen y mostrar preview
+            const img = tr.querySelector('td img');
+            if (img) {
+                previewImagen.innerHTML = `<img src="${img.src}" alt="Preview" style="max-width: 150px; max-height: 150px; object-fit: contain;"/>`;
+
+                // Extraer solo el nombre del archivo de la URL del src
+                try {
+                    const url = new URL(img.src, window.location.origin);
+                    imagenAntigua = url.searchParams.get('file');
+                } catch (error) {
+                    // Si falla, asigna null o el src completo para evitar errores
+                    imagenAntigua = null;
+                }
+
+            } else {
+                previewImagen.innerHTML = '';
+                imagenAntigua = null;
             }
-            modoEdicion = false;
-            btnCancelar.style.display = "none";
-        } else {
-            const nuevoPremio = {
-                id: premios.length + 1,
-                nombre,
-                descripcion,
-                puntos,
-                tipo,
-                imagen
-            };
-            premios.push(nuevoPremio);
+
+            btnCancelar.style.display = 'inline-block';
+            btnGuardar.innerHTML = `<i class="fas fa-save"></i> Guardar Cambios`;
         }
-
-        limpiarFormulario();
-        renderizarTabla();
-    });
-
-    btnCancelar.addEventListener("click", () => {
-        limpiarFormulario();
-        modoEdicion = false;
-        btnCancelar.style.display = "none";
-    });
-
-// Renderizar premios en tabla
-    function renderizarTabla() {
-        tablaPremiosBody.innerHTML = "";
-        premios.forEach(p => {
-            tablaPremiosBody.innerHTML += `
-      <tr>
-        <td>${p.id}</td>
-        <td>${p.nombre}</td>
-        <td>${p.descripcion}</td>
-        <td>${p.puntos}</td>
-        <td>${p.tipo}</td>
-        <td><img src="${p.imagen}" class="img-thumbnail" width="80"></td>
-        <td>
-          <button class="btn btn-sm btn-warning me-2" onclick="editarPremio(${p.id})">
-            <i class="fas fa-edit"></i>
-          </button>
-          <button class="btn btn-sm btn-danger" onclick="eliminarPremio(${p.id})">
-            <i class="fas fa-trash-alt"></i>
-          </button>
-        </td>
-      </tr>
-    `;
-        });
-    }
-
-// Editar premio
-    window.editarPremio = function (id) {
-        const premio = premios.find(p => p.id === id);
-        if (premio) {
-            premioId.value = premio.id;
-            nombrePremio.value = premio.nombre;
-            descripcionPremio.value = premio.descripcion;
-            puntosPremio.value = premio.puntos;
-            tipoPremio.value = premio.tipo;
-            previewImagenPremio.innerHTML = `<img src="${premio.imagen}" class="img-thumbnail" width="120">`;
-            modoEdicion = true;
-            btnCancelar.style.display = "inline-block";
-        }
-    };
-
-// Eliminar premio
-    window.eliminarPremio = function (id) {
-        if (confirm("¿Deseas eliminar este premio?")) {
-            premios = premios.filter(p => p.id !== id);
-            renderizarTabla();
-        }
-    };
-
-    function limpiarFormulario() {
-        premioId.value = "";
-        nombrePremio.value = "";
-        descripcionPremio.value = "";
-        puntosPremio.value = "";
-        tipoPremio.value = "";
-        archivoImagenPremio.value = "";
-        previewImagenPremio.innerHTML = "";
-    }
-
-
-// Aquí va TODO tu código JS, desde la obtención de elementos hasta las funciones.
-
-    document.getElementById('archivoImagenPremio').addEventListener('change', function () {
-        const label = document.querySelector('label[for="archivoImagenPremio"]');
-        const fileName = this.files[0]?.name || "Elegir imagen";
-        label.innerHTML = `<i class="fas fa-upload me-2"></i> ${fileName}`;
     });
 
 
+    resetForm();
 });

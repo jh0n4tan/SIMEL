@@ -1,0 +1,75 @@
+.acceso-denegado-page {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f4f6f9;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.acceso-denegado-page .main-content {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+}
+
+.acceso-denegado-page .container {
+    max-width: 700px;
+    width: 100%;
+    background-color: #fff;
+    padding: 40px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.1);
+    border-radius: 8px;
+    text-align: center;
+}
+
+.acceso-denegado-page .icon {
+    font-size: 60px;
+    color: #dc3545;
+    margin-bottom: 20px;
+}
+
+.acceso-denegado-page h1 {
+    font-size: 32px;
+    color: #343a40;
+    margin-bottom: 20px;
+}
+
+.acceso-denegado-page p {
+    text-align: justify;
+    font-size: 16px;
+    color: #555;
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+.acceso-denegado-page .button {
+    display: inline-block;
+    margin-top: 15px;
+    padding: 12px 25px;
+    background-color: #007bff;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.acceso-denegado-page .button:hover {
+    background-color: #0056b3;
+}
+
+.acceso-denegado-page footer {
+    background-color: #fff;
+    border-top: 1px solid #dee2e6;
+    padding: 10px 0;
+    text-align: center;
+}
+
+.acceso-denegado-page footer span {
+    color: #666;
+    font-size: 14px;
+}

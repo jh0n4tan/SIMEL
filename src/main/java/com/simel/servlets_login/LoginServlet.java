@@ -12,6 +12,10 @@ import java.io.PrintWriter;
 @WebServlet(name = "LoginServlet", urlPatterns = {"/LoginServlet"})
 public class LoginServlet extends HttpServlet {
 
+    private static final int TIEMPO_SESION_ALUMNO = 3 * 60;      // 3 minutos
+    private static final int TIEMPO_SESION_DOCENTE = 3 * 60;       // 3 minutos
+    private static final int TIEMPO_SESION_ADMIN = 3 * 60;         // 3 minutos
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -24,59 +28,52 @@ public class LoginServlet extends HttpServlet {
 
         PrintWriter out = response.getWriter();
 
-        // Usar el DAO para validar credenciales
         UsuarioDAO dao = new UsuarioDAO();
         Usuario user = dao.validar(usuario, password);
 
-        if (user != null) {
-            if ("inactivo".equalsIgnoreCase(user.getEstado())) {
-                out.write("{\"status\":\"inactive\", \"message\":\"Usuario inactivo\"}");
-                return;
-            }
-
-            HttpSession session = request.getSession();
-            session.setAttribute("usuario", user.getUsuario());
-            session.setAttribute("rol", user.getRol());
-            session.setAttribute("nombre", user.getNombre());
-            session.setAttribute("id_login", user.getId());
-
-            // Asignar imagen según el rol
-            String imgSrc = "img/admin.svg"; // default
-            switch (user.getRol()) {
-                case "alumno":
-                    imgSrc = "img/student.svg";
-                    break;
-                case "docente":
-                    imgSrc = "img/teacher.svg";
-                    break;
-                case "administrador":
-                    imgSrc = "img/admin.svg";
-                    break;
-            }
-            session.setAttribute("imgSrc", imgSrc);
-
-            // Redirección según el rol
-            String redirectPage = "index.jsp"; // valor por defecto
-            switch (user.getRol()) {
-                case "administrador":
-                    session.setAttribute("panelOrigen", "administrador");
-                    redirectPage = "administrador";
-                    break;
-                case "docente":
-                    session.setAttribute("panelOrigen", "docente");
-                    redirectPage = "docente";
-                    break;
-                case "alumno":
-                    session.setAttribute("panelOrigen", "alumno");
-                    redirectPage = "alumno";
-                    break;
-            }
-
-            out.write("{\"status\":\"success\", \"redirectPage\":\"" + redirectPage + "\"}");
-
-        } else {
+        if (user == null) {
             out.write("{\"status\":\"error\", \"message\":\"Usuario y/o contraseña incorrecta\"}");
+            return;
         }
+
+        if ("inactivo".equalsIgnoreCase(user.getEstado())) {
+            out.write("{\"status\":\"inactive\", \"message\":\"Usuario inactivo\"}");
+            return;
+        }
+
+        HttpSession session = request.getSession();
+        session.setAttribute("usuario", user.getUsuario());
+        session.setAttribute("rol", user.getRol());
+        session.setAttribute("nombre", user.getNombre());
+        session.setAttribute("id_login", user.getId());
+
+        int tiempoSesion;
+        String imgSrc;
+        String redirectPage;
+
+        switch (user.getRol()) {
+            case "alumno":
+                tiempoSesion = TIEMPO_SESION_ALUMNO;
+                imgSrc = "img/student.svg";
+                redirectPage = "alumno";
+                break;
+            case "docente":
+                tiempoSesion = TIEMPO_SESION_DOCENTE;
+                imgSrc = "img/teacher.svg";
+                redirectPage = "docente";
+                break;
+            case "administrador":
+            default:
+                tiempoSesion = TIEMPO_SESION_ADMIN;
+                imgSrc = "img/admin.svg";
+                redirectPage = "administrador";
+                break;
+        }
+        session.setMaxInactiveInterval(tiempoSesion);
+        session.setAttribute("imgSrc", imgSrc);
+        session.setAttribute("panelOrigen", user.getRol());
+
+        out.write("{\"status\":\"success\", \"redirectPage\":\"" + redirectPage + "\"}");
     }
 
     @Override

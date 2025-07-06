@@ -103,7 +103,7 @@ button:hover {
     background: url('../img/fondoLogin.svg') no-repeat center top;
     background-size: cover;
     background-color: #f5f5f5; /* opcional, por si el SVG no cubre todo */
-    background-position: center -50px; /* subirla y moverla a la derecha:*/ 
+    background-position: center -50px; /* subirla y moverla a la derecha:*/
 
 
 }
@@ -172,7 +172,7 @@ button:hover {
 }
 
 
-/*Efectos de las barras al escribir en cada campo */ 
+/*Efectos de las barras al escribir en cada campo */
 .focus-efecto::before {
     content: "";
     display: block;

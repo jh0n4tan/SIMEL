@@ -1,13 +1,22 @@
 .encabezado-gestionRetos th {
-  background-color: #003366; /* azul oscuro */
-  color: #f0f0f0;            /* texto claro */
-  font-weight: 600;
-  border-bottom: 2px solid #001f4d;
-  padding: 10px 12px;
+    background-color: #003366; /* azul oscuro */
+    color: #f0f0f0;            /* texto claro */
+    font-weight: 600;
+    border-bottom: 2px solid #001f4d;
+    padding: 10px 12px;
 }
 
 .encabezado-gestionRetos th:hover {
-  background-color: #003366 !important;
-  color: #f0f0f0 !important;
-  cursor: default;
+    background-color: #003366 !important;
+    color: #f0f0f0 !important;
+    cursor: default;
 }
+
+#puntosReto,
+#gradoReto {
+    width: 200px; /* Tamaño más pequeño */
+    text-align: left; /* Alineación a la izquierda */
+    padding-left: 10px; /* Asegura que el texto no esté pegado al borde */
+    box-sizing: border-box; /* Para que padding no afecte al ancho total */
+}
+

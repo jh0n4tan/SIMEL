@@ -1,92 +1,92 @@
 /* Asegurar que las cards y el contenido dentro de ellas se ajusten adecuadamente */
 .card-body {
-  position: relative;
-  padding: 20px;
-  box-sizing: border-box; /* Para que el padding no afecte el tamaño */
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between; /* Esto asegura que el contenido esté espaciado correctamente */
+    position: relative;
+    padding: 20px;
+    box-sizing: border-box; /* Para que el padding no afecte el tamaño */
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Esto asegura que el contenido esté espaciado correctamente */
 }
 
 .panel-retosEstudiantes{
-  padding: 30px;
-  background-color: #f9f9f9;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  margin-bottom: 40px;
+    padding: 30px;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 40px;
 }
 
 
 /* Estilos de las cards en pantallas más pequeñas */
 @media (max-width: 768px) {
-  .reto-card {
-    flex: 0 0 100%; /* 1 card por fila */
-  }
+    .reto-card {
+        flex: 0 0 100%; /* 1 card por fila */
+    }
 
-  .card-body {
-    padding: 15px;
-  }
+    .card-body {
+        padding: 15px;
+    }
 
-  .titulo-seccion {
-    font-size: 1.5rem;
-  }
+    .titulo-seccion {
+        font-size: 1.5rem;
+    }
 
-  .nav-tabs .nav-link {
-    font-size: 0.9rem;
-  }
+    .nav-tabs .nav-link {
+        font-size: 0.9rem;
+    }
 }
 
 /* Asegurar que el badge "completado" esté bien posicionado */
 .reto-card .badge {
-  position: absolute;
-  top: 10px;  /* Espacio de 10px desde la parte superior */
-  right: 10px; /* Espacio de 10px desde el borde derecho */
-  background-color: #28a745;
-  color: white;
-  font-size: 0.85rem;
-  padding: 0.5em;
-  z-index: 1;
-  box-sizing: border-box;
-  transition: bottom 0.3s ease-in-out, top 0.3s ease-in-out;
+    position: absolute;
+    top: 10px;  /* Espacio de 10px desde la parte superior */
+    right: 10px; /* Espacio de 10px desde el borde derecho */
+    background-color: #28a745;
+    color: white;
+    font-size: 0.85rem;
+    padding: 0.5em;
+    z-index: 1;
+    box-sizing: border-box;
+    transition: bottom 0.3s ease-in-out, top 0.3s ease-in-out;
 }
 
 /* Media Queries para asegurar que las cards sean responsivas */
 @media (max-width: 992px) {
-  .reto-card {
-    flex: 0 0 45%; /* 2 cards por fila en pantallas medianas */
-  }
+    .reto-card {
+        flex: 0 0 45%; /* 2 cards por fila en pantallas medianas */
+    }
 }
 
 /* Para pantallas más grandes, ajustamos a 3 cards por fila */
 @media (min-width: 1200px) {
-  .reto-card {
-    flex: 0 0 30%; /* 3 cards por fila */
-  }
+    .reto-card {
+        flex: 0 0 30%; /* 3 cards por fila */
+    }
 }
 
 /* Para pantallas grandes y cuando hay más de 2 cards, mover el badge a la parte inferior */
 @media (min-width: 1200px) {
-  .reto-card:nth-child(n+4) .badge {
-    top: auto; /* Desactivamos la posición en la parte superior */
-    bottom: 10px; /* Colocamos el badge en la parte inferior */
-    left: 10px; /* Ajuste del badge a la izquierda */
-    right: auto; /* Eliminamos el valor de right */
-  }
+    .reto-card:nth-child(n+4) .badge {
+        top: auto; /* Desactivamos la posición en la parte superior */
+        bottom: 10px; /* Colocamos el badge en la parte inferior */
+        left: 10px; /* Ajuste del badge a la izquierda */
+        right: auto; /* Eliminamos el valor de right */
+    }
 }
 
 /* Evitar que se solape el contenido cuando hay muchos retos completados */
 .reto-card {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between; /* Asegura que haya espacio suficiente */
-  position: relative; /* Asegura que los elementos dentro de la card se ajusten adecuadamente */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Asegura que haya espacio suficiente */
+    position: relative; /* Asegura que los elementos dentro de la card se ajusten adecuadamente */
 }
 
 /* Responsividad cuando hay muchos retos */
 @media (max-width: 576px) {
-  .reto-card .badge {
-    font-size: 0.75rem; /* Ajuste en el tamaño de fuente para pantallas pequeñas */
-    padding: 0.3em 0.5em;  /* Ajuste del padding */
-  }
+    .reto-card .badge {
+        font-size: 0.75rem; /* Ajuste en el tamaño de fuente para pantallas pequeñas */
+        padding: 0.3em 0.5em;  /* Ajuste del padding */
+    }
 }

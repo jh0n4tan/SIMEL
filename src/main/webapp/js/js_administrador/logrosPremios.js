@@ -1,131 +1,109 @@
-// Simulamos logros cargados (en realidad vendrían del backend)
-let logros = [
-    {id: 1, nombre: "Puntualidad", descripcion: "Llega a tiempo a clases"},
-    {id: 2, nombre: "Participación activa", descripcion: "Interviene frecuentemente en clase"},
-];
+document.addEventListener('DOMContentLoaded', () => {
+    const btnGuardar = document.getElementById('btnGuardarLogro');
+    const btnCancelar = document.getElementById('btnCancelarEdicion');
+    const inputId = document.getElementById('idLogro');
+    const inputNombre = document.getElementById('nombreLogro');
+    const inputDescripcion = document.getElementById('descripcionLogro');
+    const tablaBody = document.getElementById('tablaLogrosDocenteBody');
 
-const selectLogro = document.getElementById("selectLogro");
-const nombreLogro = document.getElementById("nombreLogro");
-const descripcionLogro = document.getElementById("descripcionLogro");
-const btnGuardar = document.getElementById("btnGuardarLogro");
-const tablaBody = document.getElementById("tablaLogrosDocenteBody");
+    function resetForm() {
+        inputId.value = '';
+        inputNombre.value = '';
+        inputDescripcion.value = '';
+        btnCancelar.classList.add('d-none');
+        btnGuardar.textContent = 'Guardar';
+        btnGuardar.querySelector('i').className = 'fas fa-save';
+    }
 
-// Función para refrescar tabla de logros
-function refrescarTabla() {
-    tablaBody.innerHTML = "";
-    logros.forEach(l => {
-        tablaBody.innerHTML += `
-      <tr>
-        <td>${l.id}</td>
-        <td>${l.nombre}</td>
-        <td>${l.descripcion}</td>
-<td>
-  <button class="btn btn-sm btn-outline-primary btnEditar" data-id="${l.id}">
-    <i class="fas fa-pen-to-square me-1"></i> Editar
-  </button>
-</td>
+    btnGuardar.addEventListener('click', () => {
+        const id = inputId.value;
+        const nombre = inputNombre.value.trim();
+        const descripcion = inputDescripcion.value.trim();
 
-      </tr>
-    `;
+        if (!nombre || !descripcion) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Campos incompletos',
+                text: 'Por favor, completa todos los campos'
+            });
+            return;
+        }
+
+        const accion = id ? 'editar' : 'agregar';
+
+        const datos = new URLSearchParams();
+        datos.append('accion', accion);
+        if (id)
+            datos.append('id', id);
+        datos.append('nombre', nombre);
+        datos.append('descripcion', descripcion);
+
+        fetch('logro', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: datos.toString()
+        })
+                .then(res => res.text())
+                .then(resp => {
+                    console.log("Respuesta del servidor:", resp);
+                    if (resp === 'OK') {
+                        Swal.fire({
+                            icon: 'success',
+                            title: accion === 'agregar' ? 'Logro agregado' : 'Logro actualizado',
+                            showConfirmButton: false,
+                            timer: 1500
+                        }).then(() => location.reload());
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: 'Hubo un problema al guardar el logro: ' + resp
+                        });
+                    }
+                })
+                .catch(error => {
+                    console.error("Error de red o servidor:", error);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error de red',
+                        text: 'No se pudo conectar con el servidor'
+                    });
+                });
+
     });
 
-    // Agregar evento a botones Editar
-    document.querySelectorAll(".btnEditar").forEach(btn => {
-        btn.addEventListener("click", () => {
-            const id = btn.getAttribute("data-id");
-            const logro = logros.find(l => l.id == id);
-            if (logro) {
-                // Cargar datos al formulario
-                selectLogro.value = logro.id;
-                nombreLogro.value = logro.nombre;
-                descripcionLogro.value = logro.descripcion;
+    btnCancelar.addEventListener('click', () => {
+        Swal.fire({
+            title: '¿Cancelar edición?',
+            text: 'Se perderán los cambios no guardados.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Sí, cancelar',
+            cancelButtonText: 'No, continuar editando'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                resetForm();
+                Swal.fire({
+                    title: 'Edición cancelada',
+                    icon: 'info',
+                    timer: 1500,
+                    showConfirmButton: false
+                });
             }
         });
     });
-}
 
-// Inicializamos tabla
-refrescarTabla();
-
-// Cuando se cambia la selección en el select
-selectLogro.addEventListener("change", () => {
-    const id = selectLogro.value;
-    if (!id) {
-        // Nuevo logro, limpiar campos
-        nombreLogro.value = "";
-        descripcionLogro.value = "";
-    } else {
-        // Buscar logro y cargar datos
-        const logro = logros.find(l => l.id == id);
-        if (logro) {
-            nombreLogro.value = logro.nombre;
-            descripcionLogro.value = logro.descripcion;
+    tablaBody.addEventListener('click', e => {
+        if (e.target.closest('.btnEditar')) {
+            const fila = e.target.closest('tr');
+            inputId.value = fila.dataset.id;
+            inputNombre.value = fila.querySelector('.nombre-logro').textContent;
+            inputDescripcion.value = fila.querySelector('.descripcion-logro').textContent;
+            btnCancelar.classList.remove('d-none');
+            btnGuardar.textContent = 'Actualizar';
+            btnGuardar.querySelector('i').className = 'fas fa-edit';
         }
-    }
-});
-
-// Botón guardar/editar logro
-btnGuardar.addEventListener("click", () => {
-    const idSeleccionado = selectLogro.value;
-    const nombre = nombreLogro.value.trim();
-    const descripcion = descripcionLogro.value.trim();
-
-    // Validar que haya algo que guardar o editar
-    if (!idSeleccionado && !nombre) {
-        Swal.fire({
-            icon: 'warning',
-            title: 'Error',
-            text: 'Por favor seleccione un logro existente o escriba un nombre para un nuevo logro.',
-            confirmButtonText: 'OK'
-        });
-        return;
-    }
-
-    if (nombre === "") {
-        Swal.fire({
-            icon: 'warning',
-            title: 'Error',
-            text: 'El nombre del logro no puede estar vacío.',
-            confirmButtonText: 'OK'
-        });
-        return;
-    }
-
-    if (idSeleccionado) {
-        // Editar logro existente
-        const index = logros.findIndex(l => l.id == idSeleccionado);
-        if (index > -1) {
-            logros[index].nombre = nombre;
-            logros[index].descripcion = descripcion;
-            Swal.fire({
-                icon: 'success',
-                title: '¡Listo!',
-                text: 'Logro actualizado con éxito.',
-                confirmButtonText: 'OK'
-            });
-        }
-    } else {
-        // Crear nuevo logro (simulación de ID autoincremental)
-        const nuevoId = logros.length ? logros[logros.length - 1].id + 1 : 1;
-        logros.push({id: nuevoId, nombre, descripcion});
-        Swal.fire({
-            icon: 'success',
-            title: '¡Listo!',
-            text: 'Logro creado y asignado con éxito.',
-            confirmButtonText: 'OK'
-        });
-        // Agregar al select
-        const option = document.createElement("option");
-        option.value = nuevoId;
-        option.textContent = nombre;
-        selectLogro.appendChild(option);
-        selectLogro.value = nuevoId;
-    }
-
-    refrescarTabla();
-
-    // Limpiar campos para nuevo ingreso
-    nombreLogro.value = "";
-    descripcionLogro.value = "";
-    selectLogro.value = "";
+    });
 });

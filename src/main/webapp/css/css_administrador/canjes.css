@@ -1,16 +1,16 @@
 
 .encabezado-gestionCanjes th {
-  background-color: #003366; /* azul oscuro */
-  color: #f0f0f0;            /* texto claro */
-  font-weight: 600;
-  border-bottom: 2px solid #001f4d;
-  padding: 10px 12px;
+    background-color: #003366; /* azul oscuro */
+    color: #f0f0f0;            /* texto claro */
+    font-weight: 600;
+    border-bottom: 2px solid #001f4d;
+    padding: 10px 12px;
 }
 
 .encabezado-gestionCanjes th:hover {
-  background-color: #003366 !important;
-  color: #f0f0f0 !important;
-  cursor: default;
+    background-color: #003366 !important;
+    color: #f0f0f0 !important;
+    cursor: default;
 }
 
 
@@ -42,5 +42,5 @@
 }
 
 hr {
-  margin: 0.25rem 0;
+    margin: 0.25rem 0;
 }

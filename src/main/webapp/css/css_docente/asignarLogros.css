@@ -2,113 +2,113 @@
 .select-curso-logros,
 .select-alumno-logros,
 .select-tipo-logro {
-  border: 1.5px solid #0dcaf0;         /* Igual grosor */
-  border-radius: 5px;
-  padding: 8px 12px;                   /* Padding uniforme */
-  background-color: #f8fbff;
-  color: #0c3d66;
-  font-weight: 500;
-  width: 100%;
-  font-size: 0.95rem;
-  transition: border-color 0.3s ease, box-shadow 0.3s ease;
-  box-sizing: border-box;
+    border: 1.5px solid #0dcaf0;         /* Igual grosor */
+    border-radius: 5px;
+    padding: 8px 12px;                   /* Padding uniforme */
+    background-color: #f8fbff;
+    color: #0c3d66;
+    font-weight: 500;
+    width: 100%;
+    font-size: 0.95rem;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    box-sizing: border-box;
 }
 
 .select-curso-logros:focus,
 .select-alumno-logros:focus,
 .select-tipo-logro:focus {
-  border-color: #1a73e8;
-  outline: none;
-  box-shadow: 0 0 4px rgba(26, 115, 232, 0.25);
+    border-color: #1a73e8;
+    outline: none;
+    box-shadow: 0 0 4px rgba(26, 115, 232, 0.25);
 }
 
 /* === LABELS UNIFICADOS === */
 .label-curso-logros,
 .label-alumno-logros,
 .label-tipo-logro {
-  font-size: 0.9rem;
-  color: #2c3e50;
-  font-weight: 600;
-  margin-bottom: 5px;
-  display: inline-block;
+    font-size: 0.9rem;
+    color: #2c3e50;
+    font-weight: 600;
+    margin-bottom: 5px;
+    display: inline-block;
 }
 
 /* Asegura que los inputs y textareas de la fila tengan la misma altura visual */
 .input-puntos-logro,
 .textarea-comentario-logro {
-  min-height: 42px;
-  padding-top: 8px;
-  padding-bottom: 8px;
+    min-height: 42px;
+    padding-top: 8px;
+    padding-bottom: 8px;
 }
 
 /* Ajuste para textarea comentario para que no parezca desproporcionado */
 .textarea-comentario-logro {
-  resize: none;
-  line-height: 1.5;
-  font-size: 0.95rem;
-  overflow: hidden;
+    resize: none;
+    line-height: 1.5;
+    font-size: 0.95rem;
+    overflow: hidden;
 }
 
 .input-puntos-logro:focus,
 .textarea-comentario-logro:focus {
-  border-color: #0dcaf0;
-  box-shadow: 0 0 4px rgba(26, 115, 232, 0.25);
-  outline: none;
+    border-color: #0dcaf0;
+    box-shadow: 0 0 4px rgba(26, 115, 232, 0.25);
+    outline: none;
 }
 
 /* === CORRECCIÓN DE ALINEACIÓN VERTICAL EN FORMULARIO === */
 .panel-logros .row > div {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
 }
 
 .panel-logros label {
-  margin-bottom: 5px;
+    margin-bottom: 5px;
 }
 
 .panel-logros .form-control,
 .panel-logros .form-select {
-  height: auto;
-  min-height: 42px; /* uniformiza visualmente */
-  box-sizing: border-box;
+    height: auto;
+    min-height: 42px; /* uniformiza visualmente */
+    box-sizing: border-box;
 }
 
 
 /* Unificar altura, fuente y alineación */
 .select-tipo-logro,
 .input-puntos-logro {
-  font-size: 0.95rem;
-  line-height: 1.5;
-  padding: 8px 12px;
-  min-height: 42px; /* garantiza que ambos tengan la misma altura visual */
-  box-sizing: border-box;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    padding: 8px 12px;
+    min-height: 42px; /* garantiza que ambos tengan la misma altura visual */
+    box-sizing: border-box;
 }
 
 /* Opcional: hacer que el contenedor los alinee verticalmente */
 .panel-logros .row > div {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
 }
 
 .btn-asignar-logro {
-  margin-top: 30px; /* separa del campo anterior */
+    margin-top: 30px; /* separa del campo anterior */
 }
 
 
 /* Encabezado personalizado para la tabla de logros */
 .encabezado-tabla-logros th {
-  background-color: #003366; /* azul oscuro */
-  color: #f0f0f0;            /* texto claro */
-  font-weight: 600;
-  border-bottom: 2px solid #001f4d;
-  padding: 10px 12px;
+    background-color: #003366; /* azul oscuro */
+    color: #f0f0f0;            /* texto claro */
+    font-weight: 600;
+    border-bottom: 2px solid #001f4d;
+    padding: 10px 12px;
 }
 
 /* Evitar cambio de color al pasar el mouse */
 .encabezado-tabla-logros th:hover {
-  background-color: #003366 !important;
-  color: #f0f0f0 !important;
-  cursor: default;
+    background-color: #003366 !important;
+    color: #f0f0f0 !important;
+    cursor: default;
 }

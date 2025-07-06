@@ -6,6 +6,8 @@
 
 <c:choose>
 
+
+    <%-------------------------------------------------------------- Sesion 1 ----------------------------------------------------------------%>
     <c:when test="${seccion == 'misCursos'}">
         <div class="container mt-5">
             <section class="panel-docente panel-cursos animate__animated animate__fadeIn">
@@ -46,16 +48,16 @@
                                         </tr>
                                     </c:forEach>
                                 </tbody>
-
                             </table>
                         </div>
                     </div>
                 </div>
             </section>
         </div>
-
     </c:when>
 
+
+    <%-------------------------------------------------------------- Sesion 2 ----------------------------------------------------------------%>
 
     <c:when test="${seccion == 'ingresarNotas'}">
         <div class="container mt-5">
@@ -66,18 +68,17 @@
                         <i class="fas fa-clipboard-list"></i>
                     </div>    
                     <div class="card-body">
-
-
                         <div class="mb-4">
                             <label for="selectCurso" class="form-label">Selecciona una materia y sección:</label>
                             <select id="selectCurso" class="form-control select-curso-notas">
                                 <option disabled selected>-- Selecciona --</option>
-                                <option value="matematica-4A">Matemática - 4°A</option>
-                                <option value="historia-5B">Historia - 5°B</option>
+                                <c:forEach var="curso" items="${cursosAsignados}">
+                                    <option value="${curso.idCurso}-${curso.grado}-${curso.seccion}">
+                                        ${curso.nombreCurso} - ${curso.grado}°${curso.seccion}
+                                    </option>
+                                </c:forEach>
                             </select>
                         </div>
-
-
                         <div id="tablaNotasContainer" style="display: none;">
                             <div class="table-responsive">
                                 <table class="table table-bordered text-center align-middle tabla-notas">
@@ -106,10 +107,11 @@
                 </div>
             </section>
         </div>
-
     </c:when>
 
 
+
+    <%-------------------------------------------------------------- Sesion 3 ----------------------------------------------------------------%>
     <c:when test="${seccion == 'asignarLogros'}">
         <div class="container mt-5">
             <section class="panel-logros animate__animated animate__fadeIn">
@@ -121,44 +123,52 @@
                     </div>
 
                     <div class="card-body">
-
                         <form id="formLogro" onsubmit="return asignarLogro(event)">
                             <div class="row mb-3">
                                 <div class="col-md-6">
-                                    <label for="selectCurso" class="form-label label-curso-logros">Curso:</label>
-                                    <select id="selectCurso" class="form-select select-curso-logros">
-                                        <option selected disabled>-- Selecciona un curso --</option>
-                                        <option value="matematica-4A">Matemática - 4°A</option>
-                                        <option value="historia-5B">Historia - 5°B</option>
+                                    <label for="selectCursoLogros" class="form-label label-curso-logros">Curso:</label>
+                                    <select id="selectCursoLogros" name="idCurso" class="form-select select-curso-logros" required>
+                                        <option value="" selected disabled>-- Selecciona un curso --</option>
+                                        <c:forEach var="curso" items="${cursosAsignados}">
+                                            <option value="${curso.idCurso}" 
+                                                    data-idgradoseccion="${curso.idGradoSeccion}" 
+                                                    data-grado="${curso.grado}" 
+                                                    data-seccion="${curso.seccion}">
+                                                ${curso.nombreCurso} - ${curso.grado}°${curso.seccion}
+                                            </option>
+
+                                        </c:forEach>
                                     </select>
+                                    <!-- Hidden para enviar grado y sección concatenados -->
+                                    <input type="hidden" id="idGradoSeccion" name="idGradoSeccion" value="">
                                 </div>
                                 <div class="col-md-6">
                                     <label for="selectAlumno" class="form-label label-alumno-logros">Alumno:</label>
-                                    <select id="selectAlumno" class="form-select select-alumno-logros" disabled>
-                                        <option selected disabled>-- Selecciona un alumno --</option>
+                                    <select id="selectAlumno" name="idAlumno" class="form-select select-alumno-logros" disabled required>
+                                        <option value="" selected disabled>-- Selecciona un alumno --</option>
+                                        <!-- Los alumnos se cargarán dinámicamente con JS -->
                                     </select>
                                 </div>
                             </div>
-
-
                             <div class="row mb-3">
                                 <div class="col-md-12">
                                     <label for="selectTipoLogro" class="form-label label-tipo-logro">Tipo de logro:</label>
-                                    <select id="selectTipoLogro" class="form-select select-tipo-logro">
-                                        <option selected disabled>-- Selecciona un logro --</option>
+                                    <select id="selectTipoLogro" name="idLogro" class="form-select select-tipo-logro" required>
+                                        <option value="" selected disabled>-- Selecciona un logro --</option>
+                                        <c:forEach var="logro" items="${logros}">
+                                            <option value="${logro.id}">${logro.nombre}</option>
+                                        </c:forEach>
                                     </select>
                                 </div>
                             </div>
-
-
                             <div class="row mb-3">
                                 <div class="col-md-4">
                                     <label for="puntos" class="form-label label-puntos-logro">Puntos:</label>
-                                    <input type="number" id="puntos" class="form-control input-puntos-logro" min="1" max="100" placeholder="Ej. 10">
+                                    <input type="number" id="puntos" name="puntos" class="form-control input-puntos-logro" min="1" max="100" placeholder="Ej. 10" required>
                                 </div>
                                 <div class="col-md-8">
                                     <label for="comentario" class="form-label label-comentario-logro">Comentario:</label>
-                                    <textarea id="comentario" class="form-control textarea-comentario-logro" rows="1" placeholder="Comentario opcional"></textarea>
+                                    <textarea id="comentario" name="comentario" class="form-control textarea-comentario-logro" rows="1" placeholder="Comentario opcional"></textarea>
                                 </div>
                             </div>
                             <div class="text-end">
@@ -168,47 +178,51 @@
                             </div>
                         </form>
 
-
                         <hr class="my-4">
 
                         <div class="d-flex justify-content-between align-items-center mb-3">
                             <h5 class="mb-0">📜 Historial de Logros</h5>
                             <input type="text" id="filtroHistorial" class="form-control w-25 filtro-historial-logros" placeholder="Filtrar por curso o fecha">
                         </div>
-
                         <div class="table-responsive">
                             <table class="table table-bordered text-center align-middle tabla-historial-logros" id="tablaHistorial">
                                 <thead class="encabezado-tabla-logros">
                                     <tr>
-                                        <th>Fecha</th>
-                                        <th>Curso</th>
+                                        <th>id</th>
                                         <th>Alumno</th>
+                                        <th>Curso</th>
+                                        <th>Grado</th>
                                         <th>Logro</th>
                                         <th>Puntos</th>
                                         <th>Comentario</th>
+                                        <th>Fecha</th>
                                     </tr>
                                 </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>2025-05-01</td>
-                                        <td>Matemática - 4°A</td>
-                                        <td>Luis Chalan</td>
-                                        <td>Participación destacada</td>
-                                        <td>10</td>
-                                        <td>Muy participativo en clase</td>
-                                    </tr>
-                                    <tr>
-                                        <td>2025-05-12</td>
-                                        <td>Historia - 5°B</td>
-                                        <td>Marisol Fernández</td>
-                                        <td>Mejor asistencia</td>
-                                        <td>8</td>
-                                        <td></td>
-                                    </tr>
+                                <tbody id="tbodyHistorialLogros">
+                                    <c:choose>
+                                        <c:when test="${not empty historialLogros}">
+                                            <c:forEach var="logro" items="${historialLogros}">
+                                                <tr>
+                                                    <td>${logro.id}</td>
+                                                    <td>${logro.nombreAlumno}</td>
+                                                    <td>${logro.nombreCurso}</td>
+                                                    <td>${logro.grado}° ${logro.seccion}</td>
+                                                    <td>${logro.nombreLogro}</td>
+                                                    <td>${logro.puntos}</td>
+                                                    <td>${logro.comentario}</td>
+                                                    <td>${logro.fechaAsignacion}</td>
+                                                </tr>
+                                            </c:forEach>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <tr id="filaSinDatos">
+                                                <td colspan="8" class="text-center text-muted">🛈 No se encontraron resultados.</td>
+                                            </tr>
+                                        </c:otherwise>
+                                    </c:choose>
                                 </tbody>
                             </table>
                         </div>
-
                     </div>
                 </div>
             </section>
@@ -217,10 +231,13 @@
 
 
 
+
+    <%-------------------------------------------------------------- Sesion 4 ----------------------------------------------------------------%>
+
     <c:when test="${seccion == 'rankingEstudiantes'}">
         <div class="container mt-5">
             <section class="panel-ranking animate__animated animate__fadeIn">
-                <div class="card shadow-sm"> <!-- ✅ Encabezado con fondo verde y el ícono -->
+                <div class="card shadow-sm">
                     <div class="card-header bg-docente text-info d-flex justify-content-between align-items-center">
                         <h5 class="mb-0">Ranking de alumnos</h5>
                         <i class="fas fa-trophy"></i>
@@ -231,15 +248,13 @@
                             <button class="btn btn-success me-2 btn-exportar-ranking">
                                 <i class="fas fa-file-excel"></i> Exportar Excel
                             </button>
-
                             <button class="btn btn-danger btn-generar-pdf">
                                 <i class="fas fa-file-pdf"></i> Generar PDF
                             </button>
-
                         </div>
 
-                        <!-- Tabla de Ranking -->
-                        <div class="table-responsive">
+                        <%-- Tabla de Ranking --%>
+                        <div class="table-responsive" style="max-height: 500px; overflow-y: auto;">
                             <table class="table table-bordered text-center align-middle tabla-ranking" id="tablaRanking">
                                 <thead class="encabezado-ranking">
                                     <tr>
@@ -249,29 +264,43 @@
                                         <th>Medalla</th>
                                     </tr>
                                 </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>1</td>
-                                        <td>Luis Chalan</td>
-                                        <td>85</td>
-                                        <td><span class="medalla oro">🥇 Oro</span></td>
-                                    </tr>
-                                    <tr>
-                                        <td>2</td>
-                                        <td>Marisol Fernández</td>
-                                        <td>60</td>
-                                        <td><span class="medalla plata">🥈 Plata</span></td>
-                                    </tr>
-                                    <tr>
-                                        <td>3</td>
-                                        <td>Pedro Valverde</td>
-                                        <td>40</td>
-                                        <td><span class="medalla bronce">🥉 Bronce</span></td>
-                                    </tr>
+                                <tbody id="tbodyRanking">
+                                    <c:choose>
+                                        <c:when test="${not empty rankingAlumnos}">
+                                            <c:forEach var="alumno" items="${rankingAlumnos}" varStatus="status">
+                                                <tr>
+                                                    <td>${status.index + 1}</td>
+                                                    <td>${alumno.nombre}</td>
+                                                    <td>${alumno.puntos}</td>
+                                                    <td>
+                                                        <c:choose>
+                                                            <c:when test="${alumno.medalla == 'oro'}">
+                                                                <i class="fas fa-medal medalla oro" title="Oro"></i> Oro
+                                                            </c:when>
+                                                            <c:when test="${alumno.medalla == 'plata'}">
+                                                                <i class="fas fa-medal medalla plata" title="Plata"></i> Plata
+                                                            </c:when>
+                                                            <c:when test="${alumno.medalla == 'bronce'}">
+                                                                <i class="fas fa-medal medalla bronce" title="Bronce"></i> Bronce
+                                                            </c:when>
+
+                                                            <c:otherwise>
+                                                                <span>-</span>
+                                                            </c:otherwise>
+                                                        </c:choose>
+                                                    </td>
+                                                </tr>
+                                            </c:forEach>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <tr id="filaSinRanking">
+                                                <td colspan="4" class="text-center text-muted">🛈 No hay datos disponibles para el ranking.</td>
+                                            </tr>
+                                        </c:otherwise>
+                                    </c:choose>
                                 </tbody>
                             </table>
                         </div>
-
                     </div>
                 </div>
             </section>
@@ -280,7 +309,7 @@
 
 
 
-
+    <%-------------------------------------------------------------- Sesion 5 ----------------------------------------------------------------%>
 
     <c:when test="${seccion == 'retosEstudiantes'}">
         <div class="container mt-5">
@@ -293,15 +322,25 @@
                     <div class="card-body">
 
                         <div class="selector-grado">
-                            <label for="selectGrado">Seleccione un grado:</label>
-                            <select id="selectGrado" class="form-control"></select>
+                            <label for="selectCursoReto" class="form-label">Selecciona curso y sección:</label>
+
+                            <select id="selectGrado" class="form-control mb-2">
+                                <option selected disabled>-- Selecciona --</option>
+                                <c:forEach var="curso" items="${cursosAsignados}">
+                                    <option value="${curso.idCurso}-${curso.grado}-${curso.seccion}">
+                                        ${curso.nombreCurso} - ${curso.grado}°${curso.seccion}
+                                    </option>
+                                </c:forEach>
+                            </select>
+
+                            <label for="selectAlumnoReto" class="form-label">Selecciona un alumno:</label>
+                            <select id="selectAlumnoReto" class="form-control mb-3" disabled>
+                                <option selected disabled>-- Selecciona un alumno --</option>
+                            </select>
                             <button id="btnMostrarRetos" class="btn-ver-retos">Ver Retos</button>
                         </div>
-
                         <div id="contenedorRetos" style="margin-top: 20px; display: none;">
-
                         </div>
-
                     </div>
                 </div>
             </section>

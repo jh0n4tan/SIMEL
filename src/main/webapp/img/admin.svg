@@ -1,25 +1,25 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48">
-  <defs>
-    <linearGradient id="adminGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#004e92"></stop>
-      <stop offset="100%" stop-color="#000428"></stop>
-    </linearGradient>
-  </defs>
-  <circle cx="24" cy="24" r="24" fill="url(#adminGradient)"></circle>
+    <defs>
+        <linearGradient id="adminGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#004e92"></stop>
+            <stop offset="100%" stop-color="#000428"></stop>
+        </linearGradient>
+    </defs>
+    <circle cx="24" cy="24" r="24" fill="url(#adminGradient)"></circle>
   
-  <!-- Cabeza -->
-  <circle cx="24" cy="16" r="6" fill="#f8c291"></circle>
+    <!-- Cabeza -->
+    <circle cx="24" cy="16" r="6" fill="#f8c291"></circle>
   
-  <!-- Ojos -->
-  <circle cx="22.3" cy="15.5" r="0.8" fill="#2c3e50"></circle>
-  <circle cx="25.7" cy="15.5" r="0.8" fill="#2c3e50"></circle>
+    <!-- Ojos -->
+    <circle cx="22.3" cy="15.5" r="0.8" fill="#2c3e50"></circle>
+    <circle cx="25.7" cy="15.5" r="0.8" fill="#2c3e50"></circle>
   
-  <!-- Boca -->
-  <path d="M22 19c1 1.5 3 1.5 4 0" stroke="#2c3e50" stroke-width="0.7" fill="none"></path>
+    <!-- Boca -->
+    <path d="M22 19c1 1.5 3 1.5 4 0" stroke="#2c3e50" stroke-width="0.7" fill="none"></path>
   
-  <!-- Traje -->
-  <path d="M16 28c1.5-4 14.5-4 16 0v8H16v-8z" fill="#2c3e50"></path>
+    <!-- Traje -->
+    <path d="M16 28c1.5-4 14.5-4 16 0v8H16v-8z" fill="#2c3e50"></path>
   
-  <!-- Corbata -->
-  <path d="M24 27l-1 2 1 3 1-3-1-2z" fill="#f39c12"></path>
+    <!-- Corbata -->
+    <path d="M24 27l-1 2 1 3 1-3-1-2z" fill="#f39c12"></path>
 </svg>

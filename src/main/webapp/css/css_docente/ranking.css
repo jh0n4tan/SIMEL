@@ -25,24 +25,22 @@
     font-weight: 700;
 }
 
-/* Estilo para las medallas */
 .medalla {
     font-weight: bold;
     padding: 4px 8px;
     border-radius: 4px;
     display: inline-block;
+    font-size: 1.3rem; /* tamaño icono un poco más grande */
 }
 
 .medalla.oro {
     background-color: #ffd70033;
     color: #b8860b;
 }
-
 .medalla.plata {
     background-color: #c0c0c033;
     color: #6c757d;
 }
-
 .medalla.bronce {
     background-color: #cd7f3233;
     color: #8b4513;
@@ -62,17 +60,17 @@
 
 /* Encabezado personalizado para tabla de ranking */
 .encabezado-ranking th {
-  background-color: #004080; /* azul oscuro */
-  color: #ffffff;            /* blanco para el texto */
-  font-weight: 700;
-  border-bottom: 2px solid #002050;
-  padding: 10px 15px;
-  text-transform: uppercase;
+    background-color: #004080; /* azul oscuro */
+    color: #ffffff;            /* blanco para el texto */
+    font-weight: 700;
+    border-bottom: 2px solid #002050;
+    padding: 10px 15px;
+    text-transform: uppercase;
 }
 
 /* Sin cambio de color al hacer hover */
 .encabezado-ranking th:hover {
-  background-color: #004080 !important;
-  color: #ffffff !important;
-  cursor: default;
+    background-color: #004080 !important;
+    color: #ffffff !important;
+    cursor: default;
 }

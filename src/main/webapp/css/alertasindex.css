@@ -1,0 +1,20 @@
+/* Ajusta el ancho y el diseño del popup */
+.swal2-popup {
+  width: 350px !important;  /* o el ancho que prefieras */
+  border-radius: 10px !important; /* para bordes más redondeados */
+  padding: 1.5em 1.5em 2em 1.5em !important; /* ajustar espacio interno */
+}
+
+/* Ajusta el título para que el texto no quede cortado */
+.swal2-title {
+  white-space: normal !important; /* permite que el texto haga salto de línea */
+  font-size: 1.5em !important; /* tamaño que quieras */
+  text-align: center !important; /* centrar el título */
+}
+
+/* Ajusta el contenido de la alerta */
+.swal2-content {
+  font-size: 1em !important;
+  color: #333;
+  text-align: center;
+}

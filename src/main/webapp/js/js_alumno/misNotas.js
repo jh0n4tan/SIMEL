@@ -1,68 +1,50 @@
-document.getElementById('selectCursoNota').addEventListener('change', function () {
-    const cursoSeleccionado = this.value;
+document.getElementById('selectCursoNota').addEventListener('change', function() {
+    const valor = this.value; // ej: "3-1"
+    if (!valor) return;
 
-    const datosCurso = {
-        matematica: {
-            evaluaciones: ['Diagnóstico', 'Parcial', 'Final'],
-            notas: [14.5, 12.0, 16.5],
-            comentarios: ['Buen comienzo', 'Mejorar en geometría', 'Excelente progreso']
-        },
-        historia: {
-            evaluaciones: ['Diagnóstico', 'Parcial', 'Final'],
-            notas: [13.0, 14.5, 15.0],
-            comentarios: ['Regular participación', 'Buen avance', 'Trabajo consistente']
-        },
-        ciencia: {
-            evaluaciones: ['Diagnóstico', 'Parcial', 'Final'],
-            notas: [15.0, 13.5, 14.5],
-            comentarios: ['Buen inicio', 'Atención a detalle', 'Participación activa']
-        }
-    };
+    fetch(`notasAlumno?idCurso=${valor}`)
+        .then(response => response.json())
+        .then(data => {
+            if (Object.keys(data).length === 0) {
+                alert('No hay notas para este curso.');
+                document.getElementById('contenidoNotas').style.display = 'none';
+                return;
+            }
 
-    const data = datosCurso[cursoSeleccionado];
-    const tbody = document.getElementById('tablaNotas');
-    tbody.innerHTML = '';
+            // Mostrar tabla con las notas
+            document.getElementById('contenidoNotas').style.display = 'block';
 
-    data.evaluaciones.forEach((eval, index) => {
-        const row = `
-            <tr>
-                <td>${eval}</td>
-                <td>${data.notas[index]}</td>
-                <td>${data.comentarios[index]}</td>
-            </tr>
-        `;
-        tbody.innerHTML += row;
-    });
+            const tablaNotas = document.getElementById('tablaNotas');
+            tablaNotas.innerHTML = `
+                <tr><td>Evaluación 1</td><td>${data.notaEva1}</td><td>${data.comentario}</td></tr>
+                <tr><td>Evaluación 2</td><td>${data.notaEva2}</td><td>${data.comentario}</td></tr>
+                <tr><td>Evaluación 3</td><td>${data.notaEva3}</td><td>${data.comentario}</td></tr>
+            `;
 
-    const promedio = (data.notas.reduce((a, b) => a + b, 0) / data.notas.length).toFixed(2);
-    document.getElementById('promedio').innerText = promedio;
+            document.getElementById('promedio').innerText = data.promedio;
 
-    // 👇 Primero mostramos el contenido (asegura que canvas sea visible)
-    document.getElementById('contenidoNotas').style.display = 'block';
-
-    // 👇 Luego esperamos brevemente y dibujamos el gráfico
-    setTimeout(() => {
-        mostrarGrafico(data.evaluaciones, data.notas);
-    }, 50); // El delay ayuda a asegurar que el canvas esté visible
+            dibujarGraficoNotas([data.notaEva1, data.notaEva2, data.notaEva3]);
+        })
+        .catch(error => {
+            console.error('Error al obtener las notas:', error);
+            alert('Error al cargar las notas.');
+        });
 });
 
-// Función para mostrar gráfico
-let chartInstance = null;
-function mostrarGrafico(labels, data) {
+// Función para dibujar gráfico de línea con estilo suave
+function dibujarGraficoNotas(notas) {
     const ctx = document.getElementById('graficoNotas').getContext('2d');
-
-    // Destruir gráfico anterior si existe
-    if (chartInstance) {
-        chartInstance.destroy();
+    if (window.chartNotas) {
+        window.chartNotas.destroy();
     }
 
-    chartInstance = new Chart(ctx, {
+    window.chartNotas = new Chart(ctx, {
         type: 'line',
         data: {
-            labels: labels,
+            labels: ['Evaluación 1', 'Evaluación 2', 'Evaluación 3'],
             datasets: [{
-                label: 'Notas', // Puedes dejarlo así, aunque no se mostrará
-                data: data,
+                label: 'Notas',
+                data: notas,
                 borderColor: '#0d6efd',
                 backgroundColor: '#0d6efd',
                 fill: false,
@@ -75,7 +57,7 @@ function mostrarGrafico(labels, data) {
             responsive: true,
             plugins: {
                 legend: {
-                    display: false // ✅ Oculta la leyenda
+                    display: false
                 },
                 title: {
                     display: true,
@@ -88,7 +70,10 @@ function mostrarGrafico(labels, data) {
             scales: {
                 y: {
                     beginAtZero: true,
-                    max: 20,
+                    max: 22,
+                    ticks: {
+                        stepSize: 2
+                    },
                     title: {
                         display: true,
                         text: 'Nota'
@@ -104,4 +89,3 @@ function mostrarGrafico(labels, data) {
         }
     });
 }
-

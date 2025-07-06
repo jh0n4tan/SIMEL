@@ -1,6 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ page import="java.util.List" %>
 
 
@@ -20,7 +21,7 @@
                     <br>  
                     <div class="row">
                         <div class="col-lg-12">            
-                            <button id="btnNuevo" type="button" class="btn btn-secondary" data-toggle=@dal">Nuevo</button>    
+                            <button id="btnNuevo" type="button" class="btn btn-secondary" data-toggle="modal">Nuevo</button>    
                         </div>    
                     </div>    
                 </div>    
@@ -34,8 +35,7 @@
                                         <tr>
                                             <th>Id</th>
                                             <th>Nombre</th>
-                                            <th>Usuario</th>                                 
-                                            <th>Contraseña</th>
+                                            <th>Usuario</th>                                                                          
                                             <th>Cargo</th>
                                             <th>Estado</th>
                                             <th>Fecha de creación</th> 
@@ -47,8 +47,7 @@
                                             <tr>
                                                 <td>${usuario.id}</td>
                                                 <td>${usuario.nombre}</td>
-                                                <td>${usuario.usuario}</td>
-                                                <td>${usuario.contrasena}</td>                                        
+                                                <td>${usuario.usuario}</td>                                        
                                                 <td>${usuario.rol}</td>
                                                 <td>${usuario.estado}</td>
                                                 <td>${usuario.fechaCreacion}</td>
@@ -63,7 +62,7 @@
                 </div>    
             </div>
 
-
+            <%-------------------------------------------------------------- Modal ----------------------------------------------------------------%>
             <div class="modal fade" id="modalCRUD" tabindex="-1" role="dialog" aria-labelledby="modalCRUDLabel" aria-hidden="true">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
@@ -83,14 +82,14 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="password" class="col-form-label">Contraseña:</label>
-                                    <input type="password" class="form-control" id="password" required>
+                                    <input type="password" class="form-control" id="password">
                                 </div>
                                 <div class="form-group">
                                     <label for="cargo" class="col-form-label">Cargo:</label>
                                     <select class="form-control" id="cargo" required>   
-                                        <option value="alumno">Alumno</option>
-                                        <option value="docente">Docente</option>
-                                        <option value="administrador">Administrador</option>
+                                        <option value="alumno">alumno</option>
+                                        <option value="docente">docente</option>
+                                        <option value="administrador">administrador</option>
                                     </select>
                                 </div>
                                 <div class="form-group">
@@ -143,7 +142,7 @@
 
                         <div class="tab-content" id="asignacionTabsContent">
 
-                            <!-- Pestaña Docentes -->
+                            <%-- Pestaña Docentes --%>
                             <div class="tab-pane fade show active" id="docentes" role="tabpanel" aria-labelledby="docentes-tab">
 
                                 <div class="card mb-4 shadow-sm">
@@ -151,7 +150,7 @@
                                         <h5 class="mb-0"><i class="fas fa-chalkboard-teacher"></i> Asignar Curso y Grado a Docente</h5>
                                     </div>
                                     <div class="card-body">
-                                        <form id="form-asignar-docente">
+                                        <form id="form-asignar-docente" method="post" action="AsignarCursoDocente">
                                             <div class="form-group">
                                                 <label for="docente-select">Seleccionar docente:</label>
                                                 <select class="form-control" id="docente-select" name="id_docente" required>
@@ -211,14 +210,15 @@
 
                             </div>
 
+                            <%--Formulario del alumno  --%>
+                            
                             <div class="tab-pane fade" id="alumnos" role="tabpanel" aria-labelledby="alumnos-tab">
-
                                 <div class="card mb-4 shadow-sm">
                                     <div class="card-header bg-secondary text-white d-flex justify-content-between align-items-center">
                                         <h5 class="mb-0"><i class="fas fa-user-graduate"></i> Asignar Grado a Alumno</h5>
                                     </div>
                                     <div class="card-body">
-                                        <form id="form-asignar-alumno">
+                                        <form id="form-asignar-alumno" method="post">
                                             <div class="form-group">
                                                 <label for="alumno-select">Seleccionar alumno:</label>
                                                 <select class="form-control" id="alumno-select" name="id_alumno" required>
@@ -282,32 +282,24 @@
                         <h5 class="mb-0">Asignación y registro de logros</h5>
                         <i class="fas fa-award"></i>
                     </div>
+
                     <div class="card-body">
-
-
                         <div class="mb-4">
-                            <label for="selectLogro" class="form-label">Seleccione un logro existente o escriba uno nuevo:</label>
-                            <select id="selectLogro" class="form-control mb-3">
-                                <option value="">-- Nuevo logro --</option>
-                                <option value="1">Puntualidad</option>
-                                <option value="2">Participación activa</option>
-
-                            </select>
-
+                            <label for="selectLogro" class="form-label">Asigne un nuevo logro: </label>
                             <input type="text" id="nombreLogro" class="form-control mb-2" placeholder="Nombre del logro" />
                             <textarea id="descripcionLogro" class="form-control mb-3" rows="2" placeholder="Descripción del logro" style="resize: none;"></textarea>
-
+                            <input type="hidden" id="idLogro" value="" />
                             <button id="btnGuardarLogro" class="btn btn-success">
                                 <i class="fas fa-save"></i> Guardar
                             </button>
-
+                            <button id="btnCancelarEdicion" class="btn btn-secondary d-none">Cancelar</button>
                         </div>
 
                         <hr>
-
-
                         <h5>Logros creados/asignados</h5>
-                        <div class="table-responsive">
+
+                        <%-- aparezca una barra de desplazamiento vertical --%>
+                        <div class="table-scroll" style="max-height: 300px; overflow-y: auto;">
                             <table class="table table-bordered text-center align-middle">
                                 <thead class="encabezado-logros">
                                     <tr>
@@ -318,37 +310,35 @@
                                     </tr>
                                 </thead>
                                 <tbody id="tablaLogrosDocenteBody">
-
-                                    <tr>
-                                        <td>1</td>
-                                        <td>Puntualidad</td>
-                                        <td>Llega a tiempo a clases</td>
-                                        <td>
-                                            <button class="btn btn-sm btn-outline-primary btnEditar" data-id="1">
-                                                <i class="fas fa-edit"></i> Editar
-                                            </button>
-
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>2</td>
-                                        <td>Participación activa</td>
-                                        <td>Interviene frecuentemente en clase</td>
-                                        <td>
-                                            <button class="btn btn-sm btn-outline-primary btnEditar" data-id="1">
-                                                <i class="fas fa-edit"></i> Editar
-                                            </button>
-                                        </td>
-                                    </tr>
+                                    <c:choose>
+                                        <c:when test="${not empty logros}">
+                                            <c:forEach var="logro" items="${logros}">
+                                                <tr data-id="${logro.id}">
+                                                    <td>${logro.id}</td>
+                                                    <td class="nombre-logro">${logro.nombre}</td>
+                                                    <td class="descripcion-logro">${logro.descripcion}</td>
+                                                    <td>
+                                                        <button class="btn btn-sm btn-outline-primary btnEditar" data-id="${logro.id}">
+                                                            <i class="fas fa-edit"></i> Editar
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            </c:forEach>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <tr>
+                                                <td colspan="4">No se encontraron logros.</td>
+                                            </tr>
+                                        </c:otherwise>
+                                    </c:choose>
                                 </tbody>
+
                             </table>
                         </div>
                     </div>
                 </div>
             </section>
         </div>
-
-
     </c:when>
 
     <%-------------------------------------------------------------- Sesion 4 ----------------------------------------------------------------%>
@@ -361,46 +351,33 @@
                         <i class="fas fa-gift"></i>
                     </div>
                     <div class="card-body">
-
-
                         <div class="mb-4">
                             <input type="hidden" id="premioId" value="" />
-
+                            <input type="hidden" id="imagenAntigua" name="imagenAntigua" value="">
                             <input type="text" id="nombrePremio" class="form-control mb-2" placeholder="Nombre del premio" />
-
                             <textarea id="descripcionPremio" class="form-control mb-2" rows="2" placeholder="Descripción del premio" style="resize: none;"></textarea>
-
                             <input type="number" id="puntosPremio" class="form-control mb-2" placeholder="Puntos requeridos" min="0" />
-
                             <select id="tipoPremio" class="form-control mb-2">
                                 <option value="">Seleccione tipo</option>
                                 <option value="físico">Físico</option>
                                 <option value="digital">Digital</option>
                             </select>
-
                             <label class="form-label">Imagen del premio</label>
-
-
                             <div class="custom-file-upload mb-2 d-flex justify-content-center">
                                 <label for="archivoImagenPremio" class="upload-btn text-center">
                                     <i class="fas fa-upload me-2"></i> Elegir imagen
                                 </label>
                                 <input type="file" id="archivoImagenPremio" accept="image/*" />
                             </div>
-
                             <div id="previewImagenPremio" class="mb-3"></div>
-
                             <button id="btnGuardarPremio" class="btn btn-success">
                                 <i class="fas fa-gift"></i> Guardar
                             </button>
-
                             <button id="btnCancelarEdicion" class="btn btn-secondary" style="display:none;">Cancelar</button>
                         </div>
-
                         <hr />
-
                         <h5>Premios creados</h5>
-                        <div class="table-responsive">
+                        <div class="table-scroll" style="max-height: 300px; overflow-y: auto;">
                             <table class="table table-bordered text-center align-middle">
                                 <thead class="encabezado-gestionCanjes">
                                     <tr>
@@ -414,17 +391,39 @@
                                     </tr>
                                 </thead>
                                 <tbody id="tablaPremiosBody">
-
+                                    <c:choose>
+                                        <c:when test="${not empty premios}">
+                                            <c:forEach var="premio" items="${premios}">
+                                                <tr data-id="${premio.id}">
+                                                    <td>${premio.id}</td>
+                                                    <td class="nombre-premio">${premio.nombre}</td>
+                                                    <td class="descripcion-premio">${premio.descripcion}</td>
+                                                    <td class="puntos-premio">${premio.puntosRequeridos}</td>
+                                                    <td class="tipo-premio">${premio.tipo}</td>
+                                                    <td>
+                                                        <img src="${pageContext.request.contextPath}/mostrarImagen?file=${premio.imagen}" alt="Imagen Premio" style="width: 60px; height: 60px; object-fit: cover;" />
+                                                    </td>
+                                                    <td>
+                                                        <button class="btn btn-sm btn-outline-primary btnEditar" data-id="${premio.id}">
+                                                            <i class="fas fa-edit"></i> Editar
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            </c:forEach>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <tr>
+                                                <td colspan="7">No se encontraron premios registrados.</td>
+                                            </tr>
+                                        </c:otherwise>
+                                    </c:choose>
                                 </tbody>
                             </table>
                         </div>
-
-                    </div>
+                    </div>                  
                 </div>
             </section>
         </div>
-
-
     </c:when>
 
     <%-------------------------------------------------------------- Sesion 5 ----------------------------------------------------------------%>
@@ -439,41 +438,120 @@
                     </div>
                     <div class="card-body">
 
+                        <!-- Nav tabs -->
+                        <ul class="nav nav-tabs mb-4" id="reportesTabs" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <a class="nav-link active" id="ranking-tab" data-toggle="tab" href="#ranking" role="tab" aria-controls="ranking" aria-selected="true">
+                                    🎓 Ranking Alumnos
+                                </a>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <a class="nav-link" id="canjes-tab" data-toggle="tab" href="#canjes" role="tab" aria-controls="canjes" aria-selected="false">
+                                    🎁 Canjes Realizados
+                                </a>
+                            </li>
+                        </ul>
 
-                        <div class="reporte-selector mb-4">
-                            <label for="tipo-reporte">Selecciona tipo de reporte:</label>
-                            <select id="tipo-reporte" class="form-control">
-                                <option value="alumnos">🎓 Alumnos - Ranking por puntos</option>
-                                <option value="docentes">👩‍🏫 Docentes - Uso del sistema</option>
-                                <option value="canjes">🎁 Canjes realizados</option>
-                            </select>
-                            <button id="btn-generar-reporte" class="btn btn-secondary mt-2">
-                                <i class="fas fa-chart-line"></i> Generar
-                            </button>
+                        <!-- Tab panes -->
+                        <div class="tab-content" id="reportesTabsContent">
+
+                            <!-- Ranking Alumnos -->
+                            <div class="tab-pane fade show active" id="ranking" role="tabpanel" aria-labelledby="ranking-tab">
+
+                                <div class="table-responsive" style="max-height: 500px; overflow-y: auto;">
+                                    <table class="table table-bordered text-center align-middle tabla-ranking" id="tablaRanking">
+                                        <thead class="encabezado-ranking">
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Nombre del Alumno</th>
+                                                <th>Total de Puntos</th>
+                                                <th>Medalla</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="tbodyRanking">
+                                            <c:choose>
+                                                <c:when test="${not empty rankingAlumnos}">
+                                                    <c:forEach var="alumno" items="${rankingAlumnos}" varStatus="status">
+                                                        <tr>
+                                                            <td>${status.index + 1}</td>
+                                                            <td>${alumno.nombre}</td>
+                                                            <td>${alumno.puntos}</td>
+                                                            <td>
+                                                                <c:choose>
+                                                                    <c:when test="${alumno.medalla == 'oro'}">
+                                                                        <i class="fas fa-medal medalla oro" title="Oro"></i> Oro
+                                                                    </c:when>
+                                                                    <c:when test="${alumno.medalla == 'plata'}">
+                                                                        <i class="fas fa-medal medalla plata" title="Plata"></i> Plata
+                                                                    </c:when>
+                                                                    <c:when test="${alumno.medalla == 'bronce'}">
+                                                                        <i class="fas fa-medal medalla bronce" title="Bronce"></i> Bronce
+                                                                    </c:when>
+                                                                    <c:otherwise>
+                                                                        <span>-</span>
+                                                                    </c:otherwise>
+                                                                </c:choose>
+                                                            </td>
+                                                        </tr>
+                                                    </c:forEach>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <tr id="filaSinRanking">
+                                                        <td colspan="4" class="text-center text-muted">🛈 No hay datos disponibles para el ranking.</td>
+                                                    </tr>
+                                                </c:otherwise>
+                                            </c:choose>
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                            </div>
+
+                            <!-- Canjes Realizados -->
+                            <div class="tab-pane fade" id="canjes" role="tabpanel" aria-labelledby="canjes-tab">
+
+                                <div class="table-responsive" style="max-height: 500px; overflow-y: auto;">
+                                    <table class="table table-bordered text-center align-middle tabla-canjes" id="tablaCanjes">
+                                        <thead class="encabezado-canjes">
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Nombre del Alumno</th>
+                                                <th>Premio</th>
+                                                <th>Código Canje</th>
+                                                <th>Estado</th>
+                                                <th>Fecha Canje</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="tbodyCanjes">
+                                            <c:choose>
+                                                <c:when test="${not empty listaCanjes}">
+                                                    <c:forEach var="canje" items="${listaCanjes}" varStatus="status">
+                                                        <tr>
+                                                            <td>${status.index + 1}</td>
+                                                            <td>${canje.alumnoNombre}</td>
+                                                            <td>${canje.premioNombre}</td>
+                                                            <td><code>${canje.codigoCanje}</code></td>
+                                                            <td>${canje.estado}</td>
+                                                            <td>
+                                                    <fmt:formatDate value="${canje.fechaCanje}" pattern="dd/MM/yyyy HH:mm" />
+                                                    </td>
+                                                    </tr>
+                                                </c:forEach>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <tr id="filaSinCanjes">
+                                                    <td colspan="6" class="text-center text-muted">🛈 No hay datos disponibles para canjes.</td>
+                                                </tr>
+                                            </c:otherwise>
+                                        </c:choose>
+                                        </tbody>
+
+                                    </table>
+                                </div>
+
+                            </div>
+
                         </div>
-
-
-                        <div class="table-responsive">
-                            <table class="table table-bordered text-center align-middle">
-                                <thead class="encabezado-reportes">
-                                    <tr>
-                                        <th>Curso</th>
-                                        <th>Promedio</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>Matemática</td>
-                                        <td>16.5</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Historia</td>
-                                        <td>15.2</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-
 
                         <div class="acciones-reporte mt-4 d-flex justify-content-center gap-3">
                             <button class="btn btn-danger" id="btn-exportar-pdf">
@@ -482,17 +560,14 @@
                             <button class="btn btn-success" id="btn-exportar-excel">
                                 <i class="fas fa-file-excel"></i> Exportar Excel
                             </button>
-                            <button class="btn btn-info" id="btn-imprimir">
-                                <i class="fas fa-print"></i> Imprimir
-                            </button>
                         </div>
 
                     </div>
                 </div>
             </section>
         </div>
-
     </c:when>
+
 
 
     <%-------------------------------------------------------------- Sesion 6 ----------------------------------------------------------------%>
@@ -507,75 +582,84 @@
                     </div>
                     <div class="card-body">
 
-                        <form id="formCrearReto">
+                        <form id="formCrearReto" method="post" action="${pageContext.request.contextPath}/retos">
+                            <input type="hidden" id="idReto" name="id" value="">
+                            <input type="hidden" id="accionReto" name="accion" value="agregar" />
                             <div class="form-group">
                                 <label for="nombreReto">Nombre del reto</label>
-                                <input type="text" class="form-control" id="nombreReto" required>
+                                <input type="text" class="form-control" id="nombreReto" name="nombre" required>
                             </div>
 
                             <div class="form-group mt-3">
                                 <label for="descripcionReto">Descripción</label>
-                                <textarea class="form-control" id="descripcionReto" rows="2" style="resize: none;"></textarea>
-                            </div>
-
-                            <div class="form-group mt-3">
-                                <label for="fechaLimite">Fecha límite</label>
-                                <input type="date" class="form-control" id="fechaLimite" required>
+                                <textarea class="form-control" id="descripcionReto" name="descripcion" rows="2" style="resize: none;"></textarea>
                             </div>
 
                             <div class="form-group mt-3">
                                 <label for="puntosReto">Puntos</label>
-                                <input type="number" class="form-control" id="puntosReto" required>
+                                <input type="number" class="form-control" id="puntosReto" name="puntos" required>
                             </div>
 
                             <div class="form-group mt-3">
                                 <label for="gradoReto">Grado al que va dirigido</label>
-                                <select class="form-control" id="gradoReto" required>
+                                <select class="form-control" id="gradoReto" name="grado"required>
                                     <option value="">Seleccione un grado</option>
-                                    <option value="4to">4to</option>
-                                    <option value="5to">5to</option>
-                                    <option value="6to">6to</option>
+                                    <option value="4">4to</option>
+                                    <option value="5">5to</option>
+                                    <option value="6">6to</option>
+
                                 </select>
                             </div>
-
-                            <button type="submit" class="btn btn-secondary mt-2">
+                            <button type="submit" id="btnGuardarReto" class="btn btn-secondary mt-2">
                                 <i class="fas fa-bolt"></i> Crear
                             </button>
-
-
                             <button id="btnCancelarEdicionReto" class="btn btn-outline-secondary mt-2" style="display: none;">
                                 Cancelar edición
                             </button>
-
-
                         </form>
-
                         <hr>
-
                         <h5>Retos creados</h5>
-                        <div class="table-responsive">
+                        <div class="table-scroll" style="max-height: 300px; overflow-y: auto;">
                             <table class="table table-bordered text-center align-middle">
                                 <thead class="encabezado-gestionRetos">
                                     <tr>
                                         <th>ID</th>
                                         <th>Nombre</th>
                                         <th>Descripción</th>
-                                        <th>Fecha límite</th>
                                         <th>Puntos</th>
                                         <th>Grado</th>
                                         <th>Acciones</th>
                                     </tr>
                                 </thead>
                                 <tbody id="tablaRetosBody">
+                                    <c:forEach var="reto" items="${retos}">
+                                        <tr data-id="${reto.id}">
+                                            <td>${reto.id}</td>
+                                            <td class="nombre-reto">${reto.nombre}</td>
+                                            <td class="descripcion-reto">${reto.descripcion}</td>
+                                            <td class="puntos-reto">${reto.puntos}</td>
+                                            <td class="grado-reto" data-grado="${reto.grado}">${reto.grado} - ${reto.seccion}</td>
+                                            <td>
+                                                <button class="btn btn-sm btn-outline-primary btnEditar" data-id="${reto.id}">
+                                                    <i class="fas fa-edit"></i> Editar
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </c:forEach>
 
+                                    <c:if test="${empty retos}">
+                                        <tr>
+                                            <td colspan="6" class="text-center">No se encontraron retos.</td>
+                                        </tr>
+                                    </c:if>
                                 </tbody>
                             </table>
                         </div>
-
                     </div>
                 </div>
             </section>
         </div>
-
     </c:when>
+
+
 </c:choose>

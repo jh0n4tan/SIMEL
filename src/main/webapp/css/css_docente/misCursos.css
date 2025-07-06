@@ -1,15 +1,15 @@
 /* 🎨 Encabezado personalizado SOLO para la tabla de cursos */
 .encabezado-tabla-cursos th {
-  background-color: #003366; /* azul oscuro */
-  color: #f0f0f0;            /* texto claro */
-  font-weight: 600;
-  border-bottom: 2px solid #001f4d;
-  padding: 10px 12px;
+    background-color: #003366; /* azul oscuro */
+    color: #f0f0f0;            /* texto claro */
+    font-weight: 600;
+    border-bottom: 2px solid #001f4d;
+    padding: 10px 12px;
 }
 
 /* 🛑 Evitar que el hover de Bootstrap lo altere */
 .tabla-cursos thead th:hover {
-  background-color: #003366 !important;
-  color: #f0f0f0 !important;
-  cursor: default;
+    background-color: #003366 !important;
+    color: #f0f0f0 !important;
+    cursor: default;
 }

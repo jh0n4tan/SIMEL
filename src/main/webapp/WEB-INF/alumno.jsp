@@ -1,21 +1,21 @@
-<%@ include file="Panel/head.jsp" %>
+<%@ include file="../Panel/head.jsp" %>
 <body id="page-top">
 
     <div id="wrapper">
-        <%@ include file="alumno/secciones-alumno.jsp" %>
+        <%@ include file="../alumno/secciones-alumno.jsp" %>
 
         <div id="content-wrapper" class="d-flex flex-column">
             <div id="content">
-                <%@ include file="Panel/topbar.jsp" %>
+                <%@ include file="../Panel/topbar.jsp" %>
 
                 <!-- Contenido específico del docente -->
-                <%@ include file="alumno/contenido-alumno.jsp" %>
+                <%@ include file="../alumno/contenido-alumno.jsp" %>
             </div>
 
-            <%@ include file="Panel/footer.jsp" %>
+            <%@ include file="../Panel/footer.jsp" %>
         </div>
 
-        <%@ include file="Panel/logoutModal.jsp" %>
+        <%@ include file="../Panel/logoutModal.jsp" %>
 
     </div> 
     <!-- Bootstrap core JavaScript-->
@@ -33,6 +33,8 @@
     <script src="js/datatables.min.js" type="text/javascript"></script>
     <!-- código propio JS --> 
     <script src="js/main.js" type="text/javascript"></script>
+    
+    <script src="js/Topbar.js" type="text/javascript"></script>
 
 
     <!-- Librería para alertas -->
@@ -65,5 +67,8 @@
 
     <!-- Sección Retos -->    
     <script src="js/js_alumno/retos.js" type="text/javascript"></script>
+    
+    <!--Filtro de tiempos en espera-->
+   <script src="${pageContext.request.contextPath}/js/session-expiry.js"></script>
 </body>
 </html>

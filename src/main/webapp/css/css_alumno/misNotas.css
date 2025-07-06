@@ -40,54 +40,54 @@
 
 /* 🎯 Estilos solo para el select de notas */
 .select-notas-curso {
-  border: 1px solid #0d6efd; /* azul primary */
-  border-radius: 6px;
-  padding: 10px 14px;
-  font-size: 16px;
-  background-color: #f8fcff;
-  transition: border-color 0.3s ease;
+    border: 1px solid #0d6efd; /* azul primary */
+    border-radius: 6px;
+    padding: 10px 14px;
+    font-size: 16px;
+    background-color: #f8fcff;
+    transition: border-color 0.3s ease;
 }
 
 .select-notas-curso:focus {
-  border-color: #0d6efd;
-  box-shadow: 0 0 0 3px rgba(23, 162, 184, 0.25); /* efecto focus */
-  outline: none;
+    border-color: #0d6efd;
+    box-shadow: 0 0 0 3px rgba(23, 162, 184, 0.25); /* efecto focus */
+    outline: none;
 }
 
 .encabezado-notas th {
-  background-color: #004085; /* azul intenso */
-  color: #ffffff;
-  font-weight: bold;
-  text-transform: uppercase;
-  padding: 10px 15px;
-  border-bottom: 2px solid #002752;
+    background-color: #004085; /* azul intenso */
+    color: #ffffff;
+    font-weight: bold;
+    text-transform: uppercase;
+    padding: 10px 15px;
+    border-bottom: 2px solid #002752;
 }
 
 .encabezado-notas th:hover {
-  background-color: #004085 !important;
-  color: #ffffff !important;
-  cursor: default;
+    background-color: #004085 !important;
+    color: #ffffff !important;
+    cursor: default;
 }
 
 
 /* Estilos responsivos */
 @media screen and (max-width: 768px) {
-  .panel-notas {
-    padding: 20px;
-  }
+    .panel-notas {
+        padding: 20px;
+    }
 
-  .tabla-notas td,
-  .tabla-notas th {
-    font-size: 0.9rem;
-    padding: 8px;
-  }
+    .tabla-notas td,
+    .tabla-notas th {
+        font-size: 0.9rem;
+        padding: 8px;
+    }
 
-  .grafico-evolucion {
-    width: 100%;
-    margin-top: 20px;
-  }
+    .grafico-evolucion {
+        width: 100%;
+        margin-top: 20px;
+    }
 
-  .promedio-general {
-    font-size: 1.2rem;
-  }
+    .promedio-general {
+        font-size: 1.2rem;
+    }
 }

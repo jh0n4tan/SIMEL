@@ -54,18 +54,18 @@
 }
 
 .encabezado-primaria th {
-  background-color: #003366; /* azul oscuro */
-  color: #ffffff;            /* texto blanco */
-  font-weight: 700;
-  border-bottom: 2px solid #001f4d;
-  padding: 10px 15px;
-  text-transform: uppercase;
+    background-color: #003366; /* azul oscuro */
+    color: #ffffff;            /* texto blanco */
+    font-weight: 700;
+    border-bottom: 2px solid #001f4d;
+    padding: 10px 15px;
+    text-transform: uppercase;
 }
 
 .encabezado-primaria th:hover {
-  background-color: #003366 !important;
-  color: #ffffff !important;
-  cursor: default;
+    background-color: #003366 !important;
+    color: #ffffff !important;
+    cursor: default;
 }
 
 

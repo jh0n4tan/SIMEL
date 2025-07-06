@@ -8785,7 +8785,7 @@ a:focus{
     animation-timing-function:opacity cubic-bezier(0,1,.4,1)
 }
 
-/* Color del panel izquierdo*/ 
+/* Color del panel izquierdo*/
 .bg-gradient-primary{
     background-color: #4e73df; /* Color medio */
     background-image:-webkit-gradient(linear,left top,left bottom,color-stop(10%,#4e73df),to(#224abe));

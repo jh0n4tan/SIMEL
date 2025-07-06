@@ -1,6 +1,7 @@
 package com.simel.modelo_administradorJSP;
 
 public class GradoSeccion {
+
     private int id;
     private int grado;
     private String seccion;

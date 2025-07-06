@@ -11,7 +11,7 @@
             <div class="modal-body"></div>
             <div class="modal-footer">
                 <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
-                <a class="btn btn-primary" href="index.jsp">Salir</a>
+                <a class="btn btn-primary" href="logout">Salir</a>
             </div>
         </div>
     </div>

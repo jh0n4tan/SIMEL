@@ -34,34 +34,48 @@ $(document).ready(function () {
     });
     var fila; //capturar la fila para editar o borrar el registro
 
-//botón EDITAR    
-
+// Botón EDITAR     
     $(document).on("click", ".btnEditar", function () {
-        fila = $(this).closest("tr");
-        id = parseInt(fila.find('td:eq(0)').text());
-        nombre = fila.find('td:eq(1)').text();
-        usuario = fila.find('td:eq(2)').text();
-        password = fila.find('td:eq(3)').text();
-        cargo = fila.find('td:eq(4)').text();
-        estado = fila.find('td:eq(5)').text();
-// Colocas los valores en los campos del formulario
-        $("#id").val(id); // 👈 Agrega esto
-        $("#nombre").val(nombre);
-        $("#usuario").val(usuario);
-        $("#password").val(password);
-        // Cambiar el tipo del campo a "text" para mostrar la contraseña en texto plano
-        $("#password").attr("type", "text");
-        $("#cargo").val(cargo);
-        $("#estado").val(estado);
-        opcion = 2; // Editar
+        fila = $(this).closest("tr");  // Captura la fila seleccionada
+        id = parseInt(fila.find('td:eq(0)').text());  // Obtiene el ID
+        nombre = fila.find('td:eq(1)').text();  // Obtiene el nombre
+        usuario = fila.find('td:eq(2)').text();  // Obtiene el usuario
 
+        // Obtiene cargo y estado
+        cargo = fila.find('td:eq(3)').text();  // Asegúrate de que cargo sea el valor que esperas
+        estado = fila.find('td:eq(4)').text();  // Asegúrate de que estado sea el valor que esperas
+
+        // Verifica que los valores sean correctos
+        console.log('Cargo:', cargo);  // Asegúrate de que cargo tenga un valor válido
+        console.log('Estado:', estado);  // Asegúrate de que estado tenga un valor válido
+
+        // Asigna los valores al formulario en el modal
+        $("#id").val(id);  // Asigna el ID
+        $("#nombre").val(nombre);  // Asigna el nombre
+        $("#usuario").val(usuario);  // Asigna el usuario
+
+        // Limpiar el campo de contraseña y dejarlo en formato password
+        $("#password").val("");  // Deja la contraseña vacía
+        $("#password").attr("type", "password");  // Asegura que el tipo sea "password"
+        $("#password").attr("placeholder", "Dejar vacío para no cambiar");  // Placeholder claro
+
+        // Asigna el valor de "cargo" al select
+        $("#cargo").val(cargo.trim());  // Aquí cargo debe ser un valor que coincida con el value de una de las opciones
+        $("#estado").val(estado.trim());  // Asigna el valor de estado al select en el modal
+
+        opcion = 2;  // Indica que estamos editando
+
+        // Cambia el estilo del modal para editar
         $("#modalCRUD .modal-header").css("background-color", "#007bff");
         $("#modalCRUD .modal-header").css("color", "white");
-        $("#modalCRUD .modal-title").text("Editar Persona");
-        ;
+        $("#modalCRUD .modal-title").text("Editar Usuario");
+
+        // Muestra el modal
         $("#modalCRUD").modal("show");
     });
-// Inactivar usuario (eliminación lógica)
+
+
+    // Inactivar usuario (eliminación lógica)
     $(document).on("click", ".btnBorrar", function () {
         fila = $(this);
         id = parseInt($(this).closest("tr").find('td:eq(0)').text());
@@ -111,7 +125,8 @@ $(document).ready(function () {
             }
         });
     });
-//front para registrar un nuevo usuario o editar un usuario existente
+
+// Front para registrar un nuevo usuario o editar un usuario existente
     $("#formPersonas").submit(function (e) {
         e.preventDefault();
         var id = $("#id").val(); // Necesario solo para editar
@@ -120,8 +135,9 @@ $(document).ready(function () {
         var password = $("#password").val();
         var cargo = $("#cargo").val();
         var estado = $("#estado").val();
+
         if (opcion === 1) {
-// Ya tienes esto funcionando, no lo toques
+            // Alta: Registrar un nuevo usuario
             $.ajax({
                 url: "agregarUsuario",
                 type: "POST",
@@ -162,18 +178,25 @@ $(document).ready(function () {
                 }
             });
         } else if (opcion === 2) {
-// 👇 Esta parte es NUEVA, solo para editar
+            // Edición de usuario
+            var dataToSend = {
+                id: id,
+                nombre: nombre,
+                usuario: usuario,
+                password: password,
+                cargo: cargo,
+                estado: estado
+            };
+
+            // Si la contraseña no está vacía, se añade a la petición
+            if (password.trim() !== "") {
+                dataToSend.password = password;
+            }
+
             $.ajax({
                 url: "editarUsuario",
                 type: "POST",
-                data: {
-                    id: id,
-                    nombre: nombre,
-                    usuario: usuario,
-                    password: password,
-                    cargo: cargo,
-                    estado: estado
-                },
+                data: dataToSend,
                 success: function (respuesta) {
                     if (respuesta === "OK") {
                         $("#modalCRUD").modal("hide");
@@ -205,6 +228,8 @@ $(document).ready(function () {
             });
         }
     });
+
+
     // Función para generar el nombre de usuario automáticamente
     $("#nombre").on("keyup", function () {
         var nombreCompleto = $(this).val(); // Obtiene el valor del campo "Nombre"
@@ -221,6 +246,7 @@ $(document).ready(function () {
             $("#usuario").val(usuarioGenerado); // Coloca el usuario generado en el campo "Usuario"
         }
     });
+
     $('#modalCRUD').on('hidden.bs.modal', function () {
         $("#modalCRUD .modal-header")
                 .removeAttr("style") // Elimina estilos inline

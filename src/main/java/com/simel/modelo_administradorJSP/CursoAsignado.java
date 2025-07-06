@@ -1,6 +1,7 @@
 package com.simel.modelo_administradorJSP;
 
 public class CursoAsignado {
+
     private String docenteNombre;
     private String cursoNombre;
     private int grado;
@@ -48,4 +49,3 @@ public class CursoAsignado {
         this.seccion = seccion;
     }
 }
-

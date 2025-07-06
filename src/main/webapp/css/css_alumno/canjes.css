@@ -1,55 +1,64 @@
 .panel-canjes {
-  padding: 30px;
-  background-color: #f9f9f9;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  margin-bottom: 40px;
+    padding: 30px;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 40px;
 }
 
 .premio-card {
-  border-radius: 10px;
-  overflow: hidden;
-  transition: transform 0.3s ease;
+    border-radius: 10px;
+    overflow: hidden;
+    transition: transform 0.3s ease;
 }
 .premio-card:hover {
-  transform: translateY(-5px);
+    transform: translateY(-5px);
 }
 
 .puntos-requeridos {
-  font-size: 1rem;
-  font-weight: bold;
-  margin: 10px 0;
+    font-size: 1rem;
+    font-weight: bold;
+    margin: 10px 0;
 }
 
 .filtros-canjes select {
-  border-radius: 5px;
-  padding: 5px 10px;
+    border-radius: 5px;
+    padding: 5px 10px;
 }
 
 .titulo-seccion {
-  font-size: 1.8rem;
-  font-weight: 600;
-  color: #2c3e50;
-  text-align: center;
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: #2c3e50;
+    text-align: center;
 }
+
+.premio-card img {
+    height: 200px;
+    width: 100%;
+    object-fit: contain;
+    background-color: #f9f9f9; /* para que no se vea vacío */
+    padding: 10px; /* opcional */
+}
+
 
 /* Responsive */
 @media screen and (max-width: 768px) {
-  .panel-canjes {
-    padding: 20px;
-  }
+    .panel-canjes {
+        padding: 20px;
+    }
 
-  .filtros-canjes {
-    flex-direction: column;
-    gap: 10px;
-    align-items: stretch;
-  }
+    .filtros-canjes {
+        flex-direction: column;
+        gap: 10px;
+        align-items: stretch;
+    }
 
-  .filtros-canjes select {
-    width: 100%;
-  }
+    .filtros-canjes select {
+        width: 100%;
+    }
 
-  .puntos-requeridos {
-    font-size: 0.9rem;
-  }
+    .puntos-requeridos {
+        font-size: 0.9rem;
+    }
 }

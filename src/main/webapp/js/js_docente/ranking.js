@@ -1,7 +1,7 @@
-// Exportar Excel (funciona bien ya)
+// Exportar Excel
 document.querySelector('.btn-exportar-ranking').addEventListener('click', () => {
     const tabla = document.getElementById('tablaRanking');
-    const wb = XLSX.utils.table_to_book(tabla, {sheet: "Ranking"});
+    const wb = XLSX.utils.table_to_book(tabla, { sheet: "Ranking" });
     XLSX.writeFile(wb, "ranking_alumnos.xlsx");
 
     Swal.fire({
@@ -13,43 +13,34 @@ document.querySelector('.btn-exportar-ranking').addEventListener('click', () => 
     });
 });
 
-// Generar PDF sin emojis
 document.querySelector('.btn-generar-pdf').addEventListener('click', () => {
-    const {jsPDF} = window.jspdf;
+    const { jsPDF } = window.jspdf;
     const doc = new jsPDF();
 
+    const pdfWidth = doc.internal.pageSize.getWidth();
+    const y = 10;
+
     doc.setFontSize(16);
-    doc.text('Ranking de Alumnos', doc.internal.pageSize.getWidth() / 2, 20, {align: 'center'});
+    doc.text('Ranking de Alumnos', pdfWidth / 2, y, { align: 'center' });
 
     const tabla = document.getElementById('tablaRanking');
     const filas = [...tabla.querySelectorAll('tbody tr')].map(tr => {
-        const tds = [...tr.children].map(td => td.innerText.trim());
-
-        // Reemplazar la columna de medallas completa por texto limpio
-        const medalla = tds[3];
-        if (medalla.includes('🥇')) {
-            tds[3] = 'Oro';
-        } else if (medalla.includes('🥈')) {
-            tds[3] = 'Plata';
-        } else if (medalla.includes('🥉')) {
-            tds[3] = 'Bronce';
-        } else {
-            tds[3] = '-';
-        }
-
-        return tds;
+        const tds = [...tr.children];
+        return [
+            tds[0].innerText.trim(),
+            tds[1].innerText.trim(),
+            tds[2].innerText.trim(),
+            tds[3].innerText.trim()
+        ];
     });
 
-
-    const columnas = ['#', 'Nombre del Alumno', 'Total de Puntos', 'Medalla'];
-
     doc.autoTable({
-        head: [columnas],
+        head: [['#', 'Nombre del Alumno', 'Total de Puntos', 'Medalla']],
         body: filas,
-        startY: 30,
+        startY: y + 10,
         theme: 'grid',
-        styles: {halign: 'center'},
-        headStyles: {fillColor: [255, 243, 205]}
+        styles: { halign: 'center' },
+        headStyles: { fillColor: [255, 243, 205] }
     });
 
     doc.save('ranking_alumnos.pdf');

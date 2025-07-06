@@ -1,139 +1,111 @@
-document.addEventListener('DOMContentLoaded', () => {
-  const formCrearReto = document.getElementById('formCrearReto');
-  const tablaRetosBody = document.getElementById('tablaRetosBody');
-  const btnCancelarEdicion = document.getElementById('btnCancelarEdicionReto');
+document.addEventListener("DOMContentLoaded", () => {
+    const btnGuardar = document.getElementById("btnGuardarReto");
+    const btnCancelar = document.getElementById("btnCancelarEdicionReto");
+    const form = document.getElementById("formCrearReto");
+    const inputId = document.getElementById("idReto");
+    const inputAccion = document.getElementById("accionReto");
 
-  const nombreInput = document.getElementById('nombreReto');
-  const descripcionInput = document.getElementById('descripcionReto');
-  const fechaInput = document.getElementById('fechaLimite');
-  const puntosInput = document.getElementById('puntosReto');
-  const gradoInput = document.getElementById('gradoReto');
+    btnGuardar.addEventListener("click", async (e) => {
+        e.preventDefault();
 
-  let retos = [];
-  let idContador = 1;
-  let idEditando = null;
+        const nombre = document.getElementById("nombreReto").value.trim();
+        const descripcion = document.getElementById("descripcionReto").value.trim();
+        const puntos = document.getElementById("puntosReto").value.trim();
+        const grado = document.getElementById("gradoReto").value.trim();
 
-  formCrearReto.addEventListener('submit', function (e) {
-    e.preventDefault();
-
-    const nombre = nombreInput.value.trim();
-    const descripcion = descripcionInput.value.trim();
-    const fecha = fechaInput.value;
-    const puntos = puntosInput.value.trim();
-    const grado = gradoInput.value;
-
-    if (!nombre || !descripcion || !fecha || !puntos || !grado) {
-      Swal.fire({
-        icon: 'warning',
-        title: 'Formulario incompleto',
-        text: 'Por favor, complete todos los campos.',
-      });
-      return;
-    }
-
-    if (idEditando !== null) {
-      // Editar reto existente
-      const reto = retos.find(r => r.id === idEditando);
-      reto.nombre = nombre;
-      reto.descripcion = descripcion;
-      reto.fechaLimite = fecha;
-      reto.puntos = parseInt(puntos);
-      reto.grado = grado;
-
-      Swal.fire({
-        icon: 'success',
-        title: 'Reto actualizado correctamente',
-        text: `El reto "${nombre}" fue modificado.`,
-      });
-
-      idEditando = null;
-      btnCancelarEdicion.style.display = "none";
-    } else {
-      // Crear nuevo reto
-      retos.push({
-        id: idContador++,
-        nombre,
-        descripcion,
-        fechaLimite: fecha,
-        puntos: parseInt(puntos),
-        grado
-      });
-
-      Swal.fire({
-        icon: 'success',
-        title: 'Reto creado correctamente',
-        text: `El reto "${nombre}" fue asignado a ${grado}.`,
-      });
-    }
-
-    this.reset();
-    renderizarTabla();
-  });
-
-  btnCancelarEdicion.addEventListener('click', () => {
-    idEditando = null;
-    formCrearReto.reset();
-    btnCancelarEdicion.style.display = "none";
-  });
-
-  function renderizarTabla() {
-    tablaRetosBody.innerHTML = "";
-
-    retos.forEach(reto => {
-      tablaRetosBody.innerHTML += `
-        <tr>
-          <td>${reto.id}</td>
-          <td>${reto.nombre}</td>
-          <td>${reto.descripcion}</td>
-          <td>${reto.fechaLimite}</td>
-          <td>${reto.puntos}</td>
-          <td>${reto.grado}</td>
-          <td>
-            <button class="btn btn-sm btn-warning me-2 btn-editar" data-id="${reto.id}">
-              <i class="fas fa-edit"></i>
-            </button>
-            <button class="btn btn-sm btn-danger btn-eliminar" data-id="${reto.id}">
-              <i class="fas fa-trash-alt"></i>
-            </button>
-          </td>
-        </tr>
-      `;
-    });
-
-    document.querySelectorAll(".btn-editar").forEach(btn => {
-      btn.addEventListener("click", () => {
-        const id = parseInt(btn.getAttribute("data-id"));
-        const reto = retos.find(r => r.id === id);
-        if (reto) {
-          nombreInput.value = reto.nombre;
-          descripcionInput.value = reto.descripcion;
-          fechaInput.value = reto.fechaLimite;
-          puntosInput.value = reto.puntos;
-          gradoInput.value = reto.grado;
-          idEditando = reto.id;
-          btnCancelarEdicion.style.display = "inline-block";
+        if (!nombre || !descripcion || !puntos || !grado) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Campos incompletos',
+                text: 'Por favor completa todos los campos antes de continuar.'
+            });
+            return;
         }
-      });
+
+        if (isNaN(puntos) || parseInt(puntos) <= 0) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Puntos inválidos',
+                text: 'Ingrese un número válido mayor que cero para los puntos.'
+            });
+            return;
+        }
+
+        btnGuardar.disabled = true;
+
+        const datos = new URLSearchParams();
+        datos.append("accion", inputAccion.value);
+        if (inputAccion.value === "editar") {
+            datos.append("id", inputId.value);
+        }
+        datos.append("nombre", nombre);
+        datos.append("descripcion", descripcion);
+        datos.append("puntos", puntos);
+        datos.append("grado", grado);
+
+        try {
+            const response = await fetch("retos", {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: datos.toString()
+            });
+
+            const texto = await response.text();
+
+            if (texto === "OK") {
+                Swal.fire({
+                    icon: 'success',
+                    title: inputAccion.value === 'agregar' ? 'Reto creado' : 'Reto actualizado',
+                    showConfirmButton: false,
+                    timer: 1500
+                }).then(() => window.location.reload());
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'No se pudo guardar el reto. Inténtalo nuevamente.'
+                });
+            }
+        } catch (error) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error de conexión',
+                text: 'Ocurrió un problema al conectar con el servidor.'
+            });
+        } finally {
+            btnGuardar.disabled = false;
+        }
     });
 
-    document.querySelectorAll(".btn-eliminar").forEach(btn => {
-      btn.addEventListener("click", () => {
-        const id = parseInt(btn.getAttribute("data-id"));
-        Swal.fire({
-          title: '¿Estás seguro?',
-          text: "Esta acción no se puede deshacer.",
-          icon: 'warning',
-          showCancelButton: true,
-          confirmButtonText: 'Sí, eliminar',
-          cancelButtonText: 'Cancelar'
-        }).then((result) => {
-          if (result.isConfirmed) {
-            retos = retos.filter(r => r.id !== id);
-            renderizarTabla();
-            Swal.fire('Eliminado', 'El reto ha sido eliminado.', 'success');
-          }
-        });
-      });
+    btnCancelar.addEventListener("click", (e) => {
+        e.preventDefault();
+        resetForm();
     });
-  }
+
+    function resetForm() {
+        inputId.value = "";
+        inputAccion.value = "agregar";
+        form.reset();
+        btnCancelar.style.display = "none";
+        btnGuardar.innerHTML = '<i class="fas fa-bolt"></i> Crear';
+    }
+
+    document.getElementById("tablaRetosBody").addEventListener("click", e => {
+        if (e.target.closest(".btnEditar")) {
+            const fila = e.target.closest("tr");
+            inputId.value = fila.dataset.id;
+            document.getElementById("nombreReto").value = fila.querySelector(".nombre-reto").textContent;
+            document.getElementById("descripcionReto").value = fila.querySelector(".descripcion-reto").textContent;
+            document.getElementById("puntosReto").value = fila.querySelector(".puntos-reto").textContent;
+            const grado = fila.querySelector(".grado-reto").dataset.grado;
+            document.getElementById("gradoReto").value = grado;
+
+
+            inputAccion.value = "editar";
+            btnCancelar.style.display = "inline-block";
+            btnGuardar.innerHTML = '<i class="fas fa-edit"></i> Actualizar';
+        }
+    });
 });

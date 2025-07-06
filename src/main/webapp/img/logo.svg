@@ -1,25 +1,25 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="800" height="80" viewBox="0 0 800 80">
-  <defs>
-    <linearGradient id="simelGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#004e92"/>
-      <stop offset="100%" stop-color="#000428"/>
-    </linearGradient>
-  </defs>
+    <defs>
+        <linearGradient id="simelGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#004e92"/>
+            <stop offset="100%" stop-color="#000428"/>
+        </linearGradient>
+    </defs>
 
-  <!-- Bloques con degradado -->
-  <rect x="0" y="0" width="80" height="80" fill="url(#simelGradient)"/>
-  <rect x="81" y="0" width="80" height="80" fill="url(#simelGradient)"/>
-  <rect x="162" y="0" width="80" height="80" fill="url(#simelGradient)"/>
-  <rect x="243" y="0" width="80" height="80" fill="url(#simelGradient)"/>
-  <rect x="324" y="0" width="80" height="80" fill="url(#simelGradient)"/>
+    <!-- Bloques con degradado -->
+    <rect x="0" y="0" width="80" height="80" fill="url(#simelGradient)"/>
+    <rect x="81" y="0" width="80" height="80" fill="url(#simelGradient)"/>
+    <rect x="162" y="0" width="80" height="80" fill="url(#simelGradient)"/>
+    <rect x="243" y="0" width="80" height="80" fill="url(#simelGradient)"/>
+    <rect x="324" y="0" width="80" height="80" fill="url(#simelGradient)"/>
 
-  <!-- Letras -->
-  <text x="40" y="55" font-family="Bebas Neue, sans-serif" font-size="50" font-weight="bold" fill="white" text-anchor="middle">S</text>
-  <text x="120" y="55" font-family="Bebas Neue, sans-serif" font-size="50" font-weight="bold" fill="white" text-anchor="middle">I</text>
-  <text x="200" y="55" font-family="Bebas Neue, sans-serif" font-size="50" font-weight="bold" fill="white" text-anchor="middle">M</text>
-  <text x="280" y="55" font-family="Bebas Neue, sans-serif" font-size="50" font-weight="bold" fill="white" text-anchor="middle">E</text>
-  <text x="360" y="55" font-family="Bebas Neue, sans-serif" font-size="50" font-weight="bold" fill="white" text-anchor="middle">L</text>
+    <!-- Letras -->
+    <text x="40" y="55" font-family="Bebas Neue, sans-serif" font-size="50" font-weight="bold" fill="white" text-anchor="middle">S</text>
+    <text x="120" y="55" font-family="Bebas Neue, sans-serif" font-size="50" font-weight="bold" fill="white" text-anchor="middle">I</text>
+    <text x="200" y="55" font-family="Bebas Neue, sans-serif" font-size="50" font-weight="bold" fill="white" text-anchor="middle">M</text>
+    <text x="280" y="55" font-family="Bebas Neue, sans-serif" font-size="50" font-weight="bold" fill="white" text-anchor="middle">E</text>
+    <text x="360" y="55" font-family="Bebas Neue, sans-serif" font-size="50" font-weight="bold" fill="white" text-anchor="middle">L</text>
 
-  <!-- Signo "+" -->
-  <text x="450" y="85" font-family="Bebas Neue, sans-serif" font-size="130" font-weight="bold" fill="#f39c12" text-anchor="middle" stroke-width="5">+</text>
+    <!-- Signo "+" -->
+    <text x="450" y="85" font-family="Bebas Neue, sans-serif" font-size="130" font-weight="bold" fill="#f39c12" text-anchor="middle" stroke-width="5">+</text>
 </svg>

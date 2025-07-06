@@ -1,127 +1,127 @@
 h3 {
-  margin-bottom: 20px;
-  color: #333;
-  font-family: Arial, sans-serif;
+    margin-bottom: 20px;
+    color: #333;
+    font-family: Arial, sans-serif;
 }
 
 .selector-grado {
-  display: flex;
-  align-items: center; /* Alineación vertical centrada */
-  gap: 12px;
-  margin-bottom: 20px;
-  max-width: 600px;
+    display: flex;
+    align-items: center; /* Alineación vertical centrada */
+    gap: 16px; /* Más espacio entre bloques */
+    margin-bottom: 20px;
+    max-width: 900px; /* Más ancho para que quepa todo bien */
+    flex-wrap: wrap; /* Para que no se rompa en pantallas pequeñas */
+}
+
+.selector-grado > div {
+    display: flex;
+    flex-direction: column;
+    min-width: 220px; /* Ancho mínimo para que labels + selects no se compriman */
 }
 
 .selector-grado label {
-  flex-shrink: 0;
-  font-weight: 600;
-  font-size: 16px;
-  color: #444;
-  min-width: 130px;
-  margin-bottom: 0;
-  display: flex;
-  align-items: center; /* Centra texto del label con el select */
+    font-weight: 600;
+    font-size: 16px;
+    color: #444;
+    margin-bottom: 6px;
+    white-space: nowrap; /* Que el texto no se divida */
 }
 
-select#selectGrado {
-  flex-grow: 1;
-  padding: 10px 14px;
-  font-size: 16px;
-  height: 44px; /* Altura consistente con el botón */
-  border: 1.5px solid #0dcaf0;
-  border-radius: 5px;
-  outline-offset: 2px;
-  transition: border-color 0.3s;
-  cursor: pointer;
+.selector-grado select {
+    padding: 10px 14px;
+    font-size: 16px;
+    height: 44px;
+    border: 1.5px solid #0dcaf0;
+    border-radius: 5px;
+    cursor: pointer;
+    min-width: 200px; /* Que no sea muy pequeño */
 }
-
 
 .btn-ver-retos {
-  background-color: #0dcaf0;
-  color: white;
-  padding: 10px 20px;
-  font-size: 16px;
-  height: 44px; /* Igual a la altura del select */
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  flex-shrink: 0;
-  transition: background-color 0.3s ease;
-  user-select: none;
-  box-shadow: 0 3px 6px rgba(0, 123, 255, 0.3);
+    background-color: #0dcaf0;
+    color: white;
+    padding: 10px 20px;
+    font-size: 16px;
+    height: 44px; /* Igual altura que los selects */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    flex-shrink: 0;
+    white-space: nowrap;
+    box-shadow: 0 3px 6px rgba(0, 123, 255, 0.3);
+    transition: background-color 0.3s ease;
+    align-self: flex-end; /* Alinea el botón con la parte baja de los selects */
 }
-
 
 .btn-ver-retos:hover {
-  background-color: #2c3e50;
-  box-shadow: 0 4px 8px rgba(0, 86, 179, 0.5);
+    background-color: #2c3e50;
+    box-shadow: 0 4px 8px rgba(0, 86, 179, 0.5);
 }
+
 .alumno {
-  margin-bottom: 25px;
-  border: 1px solid #ddd;
-  padding: 18px 20px;
-  border-radius: 8px;
-  background: #fafafa;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    margin-bottom: 25px;
+    border: 1px solid #ddd;
+    padding: 18px 20px;
+    border-radius: 8px;
+    background: #fafafa;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
 }
 
 .alumno h4 {
-  margin-top: 25px;
-  color: #1e2a78;
+    margin-top: 25px;
+    color: #1e2a78;
 }
 
 .reto-card {
-  border: 1px solid #d4d4d4;
-  padding: 16px;
-  margin-bottom: 15px;
-  border-radius: 8px;
-  background-color: #f9fcff;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+    border: 1px solid #d4d4d4;
+    padding: 16px;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    background-color: #f9fcff;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.08);
 }
 
 .reto-card:hover {
-  box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.12);
 }
 
 .reto-card h5 {
-  margin: 0 0 6px 0;
-  font-weight: 700;
-  color: #333;
-  font-size: 17px;
+    margin: 0 0 6px 0;
+    font-weight: 700;
+    color: #333;
+    font-size: 17px;
 }
 
 .reto-card p {
-  margin: 4px 0;
-  color: #555;
-  font-size: 14px;
-  line-height: 1.3;
+    margin: 4px 0;
+    color: #555;
+    font-size: 14px;
+    line-height: 1.3;
 }
 
 .btn-marcar {
-  margin-top: 10px;
-  padding: 7px 14px;
-  font-size: 14px;
-  background-color: #28a745;
-  border: none;
-  color: white;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-  user-select: none;
-  box-shadow: 0 2px 5px rgba(40, 167, 69, 0.4);
+    margin-top: 10px;
+    padding: 7px 14px;
+    font-size: 14px;
+    background-color: #28a745;
+    border: none;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    user-select: none;
+    box-shadow: 0 2px 5px rgba(40, 167, 69, 0.4);
 }
 
 .btn-marcar:hover {
-  background-color: #218838;
-  box-shadow: 0 4px 8px rgba(33, 136, 56, 0.6);
+    background-color: #218838;
+    box-shadow: 0 4px 8px rgba(33, 136, 56, 0.6);
 }
 
 .select-estado {
-  width: 100%;
-  margin-top: 10px;
-  padding: 6px;
-  border-radius: 4px;
-  border: 1px solid #ccc;
+    width: 100%;
+    margin-top: 10px;
+    padding: 6px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
 }
-
-
