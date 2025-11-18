@@ -6,9 +6,9 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class Conexion {
-    private static final String URL = "jdbc:mysql://localhost:3306/simel?serverTimezone=America/Lima&useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=CONVERT_TO_NULL";
-    private final String USER = "root";
-    private final String PASS = "chalan123";
+    private static final String URL = "jdbc:mysql://34.42.206.45:3306/simel?serverTimezone=America/Lima&useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=CONVERT_TO_NULL";
+    private final String USER = "admin";
+    private final String PASS = "admin";
 
     public Connection getConexion() {
         try {

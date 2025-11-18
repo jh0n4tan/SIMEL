@@ -11,7 +11,7 @@ public class UsuarioDAO {
 
     public Usuario validar(String usuario, String contrasenaIngresada) {
         Usuario u = null;
-
+        
         String sql = "SELECT * FROM login WHERE usuario = ?";
 
         try (Connection conn = DataSourceProvider.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {

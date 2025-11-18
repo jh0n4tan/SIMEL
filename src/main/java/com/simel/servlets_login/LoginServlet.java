@@ -25,7 +25,6 @@ public class LoginServlet extends HttpServlet {
 
         String usuario = request.getParameter("usuario");
         String password = request.getParameter("password");
-
         PrintWriter out = response.getWriter();
 
         UsuarioDAO dao = new UsuarioDAO();
@@ -78,6 +77,7 @@ public class LoginServlet extends HttpServlet {
 
     @Override
     public String getServletInfo() {
+        System.out.println("info");
         return "Login Servlet con uso de DAO y pool de conexiones";
     }
 }

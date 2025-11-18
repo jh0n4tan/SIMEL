@@ -22,8 +22,8 @@ public class DataSourceProvider {
     static {
         // --- Configuración básica de la conexión a la BD ---
         config.setJdbcUrl("jdbc:mysql://localhost:3306/simel?serverTimezone=America/Lima&useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=CONVERT_TO_NULL"); // La URL de tu base de datos MySQL.
-        config.setUsername("root");        // Usuario de la base de datos.
-        config.setPassword("chalan123");    // Contraseña del usuario de la base de datos.
+        config.setUsername("admin");        // Usuario de la base de datos.
+        config.setPassword("admin");    // Contraseña del usuario de la base de datos.
         config.setDriverClassName("com.mysql.cj.jdbc.Driver"); // Opcional: HikariCP suele detectar el driver automáticamente si está en el classpath (JDBC 4.0+).
 
         // --- Configuración del tamaño y comportamiento del Pool ---
